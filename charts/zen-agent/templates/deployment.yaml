@@ -1,0 +1,173 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zen-agent
+  namespace: zen-cluster
+  labels:
+    app.kubernetes.io/name: zen-agent
+    app.kubernetes.io/version: "1.0.0"
+    app.kubernetes.io/component: security-remediation
+    app.kubernetes.io/part-of: zen
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: zen-agent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: zen-agent
+        app.kubernetes.io/version: "1.0.0"
+        app.kubernetes.io/component: security-remediation
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
+    spec:
+      serviceAccountName: zen-agent
+      
+      # Security Context (Pod level)
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532  # distroless nonroot user
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      
+      containers:
+      - name: zen-agent
+        image: zubezen/zen-agent:latest
+        imagePullPolicy: Always
+        
+        # Security Context (Container level)
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 65532
+          capabilities:
+            drop:
+            - ALL
+          seccompProfile:
+            type: RuntimeDefault
+        
+        env:
+        - name: CLUSTER_ID
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: cluster-id
+        
+        - name: TENANT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: tenant-id
+        
+        - name: SAAS_API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: saas-api-url
+              optional: true
+        
+        - name: SAAS_WS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: saas-ws-url
+              optional: true
+        
+        - name: HMAC_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: zen-agent-hmac
+              key: key-id
+              optional: true
+        
+        - name: HMAC_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: zen-agent-hmac
+              key: secret
+              optional: true
+        
+        - name: WATCH_NAMESPACE
+          value: "zen-cluster"
+        
+        - name: LOG_LEVEL
+          value: "info"
+        
+        - name: AGENT_PORT
+          value: "8080"
+        
+        - name: METRICS_PORT
+          value: "9090"
+        
+        ports:
+        - name: api
+          containerPort: 8080
+          protocol: TCP
+        
+        - name: metrics
+          containerPort: 9090
+          protocol: TCP
+        
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9090
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 5
+          failureThreshold: 3
+        
+        readinessProbe:
+          httpGet:
+            path: /readiness
+            port: 9090
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+        
+        resources:
+          requests:
+            cpu: 10m
+            memory: 50Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: cache
+          mountPath: /.cache
+      
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: cache
+        emptyDir: {}
+      
+      # Anti-affinity (don't run multiple agents on same node)
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                  - zen-agent
+              topologyKey: kubernetes.io/hostname
+      
+      # Tolerate control plane taints if needed
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule

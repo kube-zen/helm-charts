@@ -1,0 +1,34 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: zen-agent
+  labels:
+    app.kubernetes.io/name: zen-agent
+    app.kubernetes.io/component: security-remediation
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: zen-agent
+subjects:
+- kind: ServiceAccount
+  name: zen-agent
+  namespace: zen-cluster
+---
+# Namespace-scoped binding for remediation patches
+# This limits where zen-agent can actually apply patches
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: zen-agent-remediation
+  namespace: default  # Add more RoleBindings for other namespaces as needed
+  labels:
+    app.kubernetes.io/name: zen-agent
+    app.kubernetes.io/component: security-remediation
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: zen-agent
+subjects:
+- kind: ServiceAccount
+  name: zen-agent
+  namespace: zen-cluster

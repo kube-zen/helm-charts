@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zen-agent
+  namespace: zen-cluster
+  labels:
+    app.kubernetes.io/name: zen-agent
+    app.kubernetes.io/component: security-remediation
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9090"
+    prometheus.io/path: "/metrics"
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: zen-agent
+  ports:
+  - name: api
+    port: 8080
+    targetPort: 8080
+    protocol: TCP
+  - name: metrics
+    port: 9090
+    targetPort: 9090
+    protocol: TCP

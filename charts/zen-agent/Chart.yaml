@@ -19,6 +19,6 @@ icon: https://kube-zen.io/icon.png
 dependencies:
   - name: zen-watcher
     version: 1.0.0
-    repository: "https://kube-zen.github.io/helm-charts"
+    repository: "file://../zen-watcher"
     condition: zen-watcher.enabled
 

@@ -71,20 +71,6 @@ spec:
               name: zen-agent-config
               key: saas-ws-url
         
-        - name: SAAS_API_URL
-          valueFrom:
-            configMapKeyRef:
-              name: zen-agent-config
-              key: saas-api-url
-              optional: true
-        
-        - name: SAAS_WS_URL
-          valueFrom:
-            configMapKeyRef:
-              name: zen-agent-config
-              key: saas-ws-url
-              optional: true
-        
         - name: HMAC_KEY_ID
           valueFrom:
             secretKeyRef:

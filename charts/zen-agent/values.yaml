@@ -1,15 +1,16 @@
 # zen-agent configuration
 image:
   repository: zubezen/zen-agent
-  tag: latest
-  pullPolicy: Always
+  tag: "1.0.0"  # Use semantic versioning (immutable)
+  pullPolicy: IfNotPresent  # Immutable tags don't need Always
 
 # zen-watcher dependency (installed automatically)
 zen-watcher:
   enabled: true
   image:
     repository: zubezen/zen-watcher
-    tag: latest
+    tag: "1.0.0"  # Use semantic versioning (immutable)
+    pullPolicy: IfNotPresent
 
 # SaaS connection
 saas:

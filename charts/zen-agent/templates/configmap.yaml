@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zen-agent-config
+  namespace: zen-cluster
+  labels:
+    app.kubernetes.io/name: zen-agent
+    app.kubernetes.io/component: security-remediation
+data:
+  cluster-id: "REPLACE_WITH_CLUSTER_ID"
+  tenant-id: "REPLACE_WITH_TENANT_ID"
+  saas-api-url: "https://api.kube-zen.io"
+  saas-ws-url: "wss://ws.kube-zen.io/ws"
+  
+  # Agent behavior configuration
+  sync-interval: "30s"
+  status-sync-interval: "5m"
+  scheduler-interval: "1m"
+  watchdog-interval: "1m"
+  
+  # Namespace where CRDs are stored
+  watch-namespace: "zen-cluster"
+  
+  # Log level (debug, info, warn, error, crit)
+  log-level: "info"

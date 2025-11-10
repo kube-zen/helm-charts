@@ -53,17 +53,23 @@ spec:
             type: RuntimeDefault
         
         env:
-        - name: CLUSTER_ID
+        - name: CLUSTER_TOKEN
           valueFrom:
-            configMapKeyRef:
-              name: zen-agent-config
-              key: cluster-id
+            secretKeyRef:
+              name: zen-agent-token
+              key: token
         
-        - name: TENANT_ID
+        - name: SAAS_API_URL
           valueFrom:
             configMapKeyRef:
               name: zen-agent-config
-              key: tenant-id
+              key: saas-api-url
+        
+        - name: SAAS_WS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: saas-ws-url
         
         - name: SAAS_API_URL
           valueFrom:

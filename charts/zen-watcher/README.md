@@ -74,7 +74,7 @@ helm install zen-watcher zen-watcher/zen-watcher \
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `global.clusterID` | Unique cluster identifier (required) | `my-cluster` |
-| `image.repository` | Image repository | `corbe/zen-watcher` |
+| `image.repository` | Image repository | `zubezen/zen-watcher` |
 | `image.tag` | Image tag | `1.0.0` |
 | `image.verifySignature` | Enable Cosign signature verification | `false` |
 | `networkPolicy.enabled` | Enable NetworkPolicy | `true` |

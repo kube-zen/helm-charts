@@ -30,7 +30,7 @@ annotations:
     - url: https://github.com/your-org/zen-watcher/blob/main/docs/security-best-practices.md
   # Cosign signature verification
   artifacthub.io/imagesWhitelist: |
-    - corbe/zen-watcher
+    - zubezen/zen-watcher
   # Security reporting
   artifacthub.io/securityReportCreatedAt: "2024-11-04T00:00:00Z"
 

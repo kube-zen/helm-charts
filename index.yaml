@@ -3,14 +3,14 @@ entries:
   zen-agent:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-09T20:47:54.59126575-05:00"
+    created: "2025-11-09T20:48:40.275186365-05:00"
     dependencies:
     - condition: zen-watcher.enabled
       name: zen-watcher
       repository: file://../zen-watcher
       version: 1.0.0
     description: Zero-Effort Kubernetes Security Agent with Automated Remediation
-    digest: ea36fd39c8a8e7dd8c2a76d3a3bd7cc822a82e1ea22f41d38e838ceec81440ab
+    digest: 26f28b661332f25db3d364daf542fc7f807ff97afa4cedfc6c695bae9c987158
     home: https://kube-zen.io
     icon: https://kube-zen.io/icon.png
     keywords:
@@ -32,7 +32,7 @@ entries:
   - annotations:
       artifacthub.io/containsSecurityUpdates: "true"
       artifacthub.io/imagesWhitelist: |
-        - corbe/zen-watcher
+        - zubezen/zen-watcher
       artifacthub.io/prerelease: "false"
       artifacthub.io/recommendations: |
         - url: https://github.com/your-org/zen-watcher/blob/main/docs/security-best-practices.md
@@ -42,10 +42,10 @@ entries:
         url: https://keybase.io/your-keybase
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-09T20:47:54.59268749-05:00"
+    created: "2025-11-09T20:48:40.276144698-05:00"
     description: Universal Kubernetes Event Aggregator - Secure, Extensible Event
       Collection
-    digest: 6731ed422fc29cf6c1768f1ba0c0c9b52756f4794756ab3b19481ba46ee0589a
+    digest: b0cebd7fec133678566ac7ac25a9ea1cb5348c2d59d0842d9e35ff5d4d80e696
     home: https://github.com/your-org/zen-watcher
     icon: https://raw.githubusercontent.com/your-org/zen-watcher/main/docs/logo.png
     keywords:
@@ -65,4 +65,4 @@ entries:
     urls:
     - https://kube-zen.github.io/helm-charts/zen-watcher-1.0.0.tgz
     version: 1.0.0
-generated: "2025-11-09T20:47:54.588679561-05:00"
+generated: "2025-11-09T20:48:40.273318019-05:00"

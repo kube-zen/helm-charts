@@ -1,26 +1,68 @@
 apiVersion: v1
 entries:
-  zen-watcher:
+  zen-agent:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-09T20:35:17.269767885-05:00"
-    description: Zero-Effort Kubernetes Security Event Watcher
-    digest: 76e3bb96b4db87ee9a55b505891028bd004afb3db0e9e18c2f289a8f3a7e38c8
+    created: "2025-11-09T20:38:28.125993098-05:00"
+    dependencies:
+    - condition: zen-watcher.enabled
+      name: zen-watcher
+      repository: file://../zen-watcher
+      version: 1.0.0
+    description: Zero-Effort Kubernetes Security Agent with Automated Remediation
+    digest: 15ec9cdb10999ed41352e778bdabed62ce2a1a2fc9968863fa12325c12978224
     home: https://kube-zen.io
     icon: https://kube-zen.io/icon.png
     keywords:
     - kubernetes
     - security
-    - monitoring
-    - observability
+    - remediation
+    - automation
     maintainers:
     - email: zen@kube-zen.io
       name: Kube-Zen Team
+    name: zen-agent
+    sources:
+    - https://github.com/kube-zen/zen-agent
+    type: application
+    urls:
+    - https://kube-zen.github.io/helm-charts/zen-agent-1.0.0.tgz
+    version: 1.0.0
+  zen-watcher:
+  - annotations:
+      artifacthub.io/containsSecurityUpdates: "true"
+      artifacthub.io/imagesWhitelist: |
+        - corbe/zen-watcher
+      artifacthub.io/prerelease: "false"
+      artifacthub.io/recommendations: |
+        - url: https://github.com/your-org/zen-watcher/blob/main/docs/security-best-practices.md
+      artifacthub.io/securityReportCreatedAt: "2024-11-04T00:00:00Z"
+      artifacthub.io/signKey: |
+        fingerprint: <your-gpg-fingerprint>
+        url: https://keybase.io/your-keybase
+    apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-11-09T20:38:28.127241325-05:00"
+    description: Universal Kubernetes Event Aggregator - Secure, Extensible Event
+      Collection
+    digest: 7f6bddc3ca57589a174edc72d98d54321d075a6ce49e1e06a24c9e6cf840a0c6
+    home: https://github.com/your-org/zen-watcher
+    icon: https://raw.githubusercontent.com/your-org/zen-watcher/main/docs/logo.png
+    keywords:
+    - security
+    - compliance
+    - observability
+    - events
+    - monitoring
+    - kubernetes
+    maintainers:
+    - email: maintainers@kube-zen.com
+      name: Zen Watcher Team
     name: zen-watcher
     sources:
-    - https://github.com/kube-zen/zen-watcher
+    - https://github.com/your-org/zen-watcher
     type: application
     urls:
     - https://kube-zen.github.io/helm-charts/zen-watcher-1.0.0.tgz
     version: 1.0.0
-generated: "2025-11-09T20:35:17.269116828-05:00"
+generated: "2025-11-09T20:38:28.122110175-05:00"

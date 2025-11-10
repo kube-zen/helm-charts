@@ -3,14 +3,14 @@ entries:
   zen-agent:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-09T23:38:25.426431205-05:00"
+    created: "2025-11-10T07:45:10.099216616-05:00"
     dependencies:
     - condition: zen-watcher.enabled
       name: zen-watcher
       repository: file://../zen-watcher
       version: 1.0.0
     description: Zero-Effort Kubernetes Security Agent with Automated Remediation
-    digest: eb461f43df03490b11334a8d9ca9bf58ae06e155a16abd3da99b1a731ebdae28
+    digest: c78c5868f1758f1e303c5b68266676e6d68b6325b29440ac47bd7a8267df2020
     home: https://kube-zen.io
     icon: https://kube-zen.io/icon.png
     keywords:
@@ -42,10 +42,10 @@ entries:
         url: https://keybase.io/your-keybase
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-09T23:38:25.429908746-05:00"
+    created: "2025-11-10T07:45:10.10119052-05:00"
     description: Universal Kubernetes Event Aggregator - Secure, Extensible Event
       Collection
-    digest: d135d65996e463b5d1e3ac56f3241b67c98e13baf49fe7d013aa0931ab41b99f
+    digest: 476f64442e1cf949d4f73a5f72f0796a781aeca753e302514ea83afe54673591
     home: https://github.com/your-org/zen-watcher
     icon: https://raw.githubusercontent.com/your-org/zen-watcher/main/docs/logo.png
     keywords:
@@ -65,4 +65,4 @@ entries:
     urls:
     - https://kube-zen.github.io/helm-charts/zen-watcher-1.0.0.tgz
     version: 1.0.0
-generated: "2025-11-09T23:38:25.424337299-05:00"
+generated: "2025-11-10T07:45:10.096153329-05:00"

@@ -1,6 +1,6 @@
 # zen-agent configuration
 image:
-  repository: zubezen/zen-agent
+  repository: kubezen/zen-agent
   tag: "1.0.0"  # Use semantic versioning (immutable)
   pullPolicy: IfNotPresent  # Immutable tags don't need Always
 
@@ -8,7 +8,7 @@ image:
 zen-watcher:
   enabled: true
   image:
-    repository: zubezen/zen-watcher
+    repository: kubezen/zen-watcher
     tag: "1.0.0"  # Use semantic versioning (immutable)
     pullPolicy: IfNotPresent
 

@@ -7,10 +7,8 @@ metadata:
     app.kubernetes.io/name: zen-agent
     app.kubernetes.io/component: security-remediation
 data:
-  cluster-id: "REPLACE_WITH_CLUSTER_ID"
-  tenant-id: "REPLACE_WITH_TENANT_ID"
-  saas-api-url: "https://api.kube-zen.io"
-  saas-ws-url: "wss://ws.kube-zen.io/ws"
+  saas-api-url: {{ .Values.saas.endpoint | quote }}
+  saas-ws-url: {{ .Values.saas.endpoint | replace "https://" "wss://" | replace "http://" "ws://" }}/ws
   
   # Agent behavior configuration
   sync-interval: "30s"

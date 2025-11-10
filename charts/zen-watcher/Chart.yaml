@@ -1,0 +1,19 @@
+apiVersion: v2
+name: zen-watcher
+description: Zero-Effort Kubernetes Security Event Watcher
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - kubernetes
+  - security
+  - monitoring
+  - observability
+home: https://kube-zen.io
+sources:
+  - https://github.com/kube-zen/zen-watcher
+maintainers:
+  - name: Kube-Zen Team
+    email: zen@kube-zen.io
+icon: https://kube-zen.io/icon.png
+

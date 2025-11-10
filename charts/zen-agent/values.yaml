@@ -1,0 +1,27 @@
+# zen-agent configuration
+image:
+  repository: zubezen/zen-agent
+  tag: latest
+  pullPolicy: Always
+
+# zen-watcher dependency (installed automatically)
+zen-watcher:
+  enabled: true
+  image:
+    repository: zubezen/zen-watcher
+    tag: latest
+
+# SaaS connection
+saas:
+  endpoint: "https://api.kube-zen.io"
+  clusterToken: ""  # Set during installation
+
+# Resource limits
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
+

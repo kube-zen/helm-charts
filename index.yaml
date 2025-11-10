@@ -1,0 +1,26 @@
+apiVersion: v1
+entries:
+  zen-watcher:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-11-09T20:35:17.269767885-05:00"
+    description: Zero-Effort Kubernetes Security Event Watcher
+    digest: 76e3bb96b4db87ee9a55b505891028bd004afb3db0e9e18c2f289a8f3a7e38c8
+    home: https://kube-zen.io
+    icon: https://kube-zen.io/icon.png
+    keywords:
+    - kubernetes
+    - security
+    - monitoring
+    - observability
+    maintainers:
+    - email: zen@kube-zen.io
+      name: Kube-Zen Team
+    name: zen-watcher
+    sources:
+    - https://github.com/kube-zen/zen-watcher
+    type: application
+    urls:
+    - https://kube-zen.github.io/helm-charts/zen-watcher-1.0.0.tgz
+    version: 1.0.0
+generated: "2025-11-09T20:35:17.269116828-05:00"

@@ -1,0 +1,24 @@
+apiVersion: v2
+name: zen-agent
+description: Zero-Effort Kubernetes Security Agent with Automated Remediation
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - kubernetes
+  - security
+  - remediation
+  - automation
+home: https://kube-zen.io
+sources:
+  - https://github.com/kube-zen/zen-agent
+maintainers:
+  - name: Kube-Zen Team
+    email: zen@kube-zen.io
+icon: https://kube-zen.io/icon.png
+dependencies:
+  - name: zen-watcher
+    version: 1.0.0
+    repository: "https://kube-zen.github.io/helm-charts"
+    condition: zen-watcher.enabled
+

@@ -8,10 +8,10 @@ spec:
     kind: ZenAgentEvent
     listKind: ZenAgentEventList
     plural: zenagentevents
-    singular: zenagent event
+    singular: zenagent-event
     shortNames:
-      - zaevent
-      - zaevents
+    - zaevent
+    - zaevents
   scope: Namespaced
   versions:
     - name: v1

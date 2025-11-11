@@ -1,0 +1,36 @@
+{{- if and .Values.watcher .Values.watcher.networkPolicy .Values.watcher.networkPolicy.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "zen-agent.watcher.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "zen-agent.watcher.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "zen-agent.watcher.selectorLabels" . | nindent 6 }}
+  
+  policyTypes:
+  - Ingress
+  - Egress
+  
+  ingress:
+  # Health/metrics from monitoring namespace
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: monitoring
+    ports:
+    - port: 8080
+      protocol: TCP
+  
+  egress:
+  # Allow all egress - Required for:
+  # - Kubernetes API access (10.43.0.1:443)
+  # - Cross-namespace pod listing for auto-detect
+  # - DNS resolution
+  # - External SaaS endpoint communication
+  - {}
+{{- end }}
+

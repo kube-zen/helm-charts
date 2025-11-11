@@ -9,13 +9,44 @@ zen-watcher:
   enabled: true
   image:
     repository: kubezen/zen-watcher
-    tag: "1.0.0"  # Use semantic versioning (immutable)
+    tag: "1.0.6"  # Use semantic versioning (immutable)
     pullPolicy: IfNotPresent
+  
+  # Auto-detect security tools (enabled by default)
+  autoDetect:
+    enabled: true  # Continuously detect installed security tools
+  
+  # Optional: Override auto-detected namespaces
+  namespaces:
+    kyverno: "kyverno"
+    trivy: "trivy-system"
+    falco: "falco"
+    kubeBench: "kube-bench"
+  
+  # NetworkPolicy
+  networkPolicy:
+    enabled: true  # Always enabled for security
+
+# Multi-tenancy configuration (set by UI during registration)
+tenant:
+  id: ""  # Tenant UUID from SaaS platform
+
+cluster:
+  id: ""  # Cluster UUID from SaaS platform
 
 # SaaS connection
 saas:
   endpoint: "https://api.kube-zen.io"
-  clusterToken: ""  # Set during installation
+  clusterToken: ""  # Bootstrap token from cluster registration
+
+# HMAC authentication (optional, disabled by default)
+hmac:
+  enabled: false
+  key: ""  # Per-tenant shared secret
+
+# Legacy PSP support (disabled by default, clusters without PSP will fail if enabled)
+psp:
+  enabled: false
 
 # Resource limits
 resources:

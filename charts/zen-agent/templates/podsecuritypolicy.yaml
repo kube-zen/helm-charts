@@ -1,79 +1,32 @@
-# Pod Security Standards (Restricted)
-# This enforces the most restrictive security profile
-apiVersion: v1
-kind: Namespace
+{{- if .Values.psp.enabled }}
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
 metadata:
-  name: zen-cluster
+  name: zen-agent-psp
   labels:
-    pod-security.kubernetes.io/enforce: restricted
-    pod-security.kubernetes.io/audit: restricted
-    pod-security.kubernetes.io/warn: restricted
-    app.kubernetes.io/part-of: zen
----
-# NetworkPolicy - Restrict egress to only necessary endpoints
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
-metadata:
-  name: zen-agent-network-policy
-  namespace: zen-cluster
+    app.kubernetes.io/name: zen-agent
 spec:
-  podSelector:
-    matchLabels:
-      app.kubernetes.io/name: zen-agent
-  policyTypes:
-  - Ingress
-  - Egress
-  
-  ingress:
-  # Allow from within namespace (for metrics scraping)
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: zen-cluster
-    ports:
-    - protocol: TCP
-      port: 8080
-    - protocol: TCP
-      port: 9090
-  
-  # Allow from monitoring namespace (Prometheus)
-  - from:
-    - namespaceSelector:
-        matchLabels:
-          name: monitoring
-    ports:
-    - protocol: TCP
-      port: 9090
-  
-  egress:
-  # Allow DNS resolution
-  - to:
-    - namespaceSelector:
-        matchLabels:
-          name: kube-system
-    ports:
-    - protocol: UDP
-      port: 53
-  
-  # Allow Kubernetes API access
-  - to:
-    - namespaceSelector:
-        matchLabels:
-          name: default
-    ports:
-    - protocol: TCP
-      port: 443
-  
-  # Allow HTTPS to SaaS (api.kube-zen.io, ws.kube-zen.io)
-  - to:
-    - podSelector: {}  # Any pod (external egress via CNI)
-    ports:
-    - protocol: TCP
-      port: 443
-  
-  # Allow HTTP for health checks (if needed)
-  - to:
-    - podSelector: {}
-    ports:
-    - protocol: TCP
-      port: 80
+  privileged: false
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+    - ALL
+  volumes:
+    - 'configMap'
+    - 'emptyDir'
+    - 'projected'
+    - 'secret'
+    - 'downwardAPI'
+    - 'persistentVolumeClaim'
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: 'MustRunAsNonRoot'
+  seLinux:
+    rule: 'RunAsAny'
+  supplementalGroups:
+    rule: 'RunAsAny'
+  fsGroup:
+    rule: 'RunAsAny'
+  readOnlyRootFilesystem: true
+{{- end }}

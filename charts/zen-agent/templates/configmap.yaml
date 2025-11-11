@@ -2,11 +2,16 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: zen-agent-config
-  namespace: zen-cluster
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: zen-agent
     app.kubernetes.io/component: security-remediation
 data:
+  # Multi-tenancy identifiers (set by SaaS UI during registration)
+  cluster-id: {{ .Values.cluster.id | quote }}
+  tenant-id: {{ .Values.tenant.id | quote }}
+  
+  # SaaS API endpoints
   saas-api-url: {{ .Values.saas.endpoint | quote }}
   saas-ws-url: {{ .Values.saas.endpoint | replace "https://" "wss://" | replace "http://" "ws://" }}/ws
   
@@ -17,7 +22,7 @@ data:
   watchdog-interval: "1m"
   
   # Namespace where CRDs are stored
-  watch-namespace: "zen-cluster"
+  watch-namespace: {{ .Release.Namespace | quote }}
   
   # Log level (debug, info, warn, error, crit)
   log-level: "info"

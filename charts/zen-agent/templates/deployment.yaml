@@ -53,47 +53,57 @@ spec:
             type: RuntimeDefault
         
         env:
+        # Identity from ConfigMap
+        - name: CLUSTER_ID
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: cluster-id
+        - name: TENANT_ID
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: tenant-id
+        
+        # Authentication from Secret
+        - name: BOOTSTRAP_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: zen-agent-token
+              key: token
         - name: CLUSTER_TOKEN
           valueFrom:
             secretKeyRef:
               name: zen-agent-token
               key: token
         
+        # SaaS endpoints from ConfigMap
         - name: SAAS_API_URL
           valueFrom:
             configMapKeyRef:
               name: zen-agent-config
               key: saas-api-url
-        
         - name: SAAS_WS_URL
           valueFrom:
             configMapKeyRef:
               name: zen-agent-config
               key: saas-ws-url
         
-        - name: HMAC_KEY_ID
+        # Optional HMAC (future)
+        - name: HMAC_KEY
           valueFrom:
             secretKeyRef:
-              name: zen-agent-hmac
-              key: key-id
+              name: zen-agent-token
+              key: hmac-key
               optional: true
         
-        - name: HMAC_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: zen-agent-hmac
-              key: secret
-              optional: true
-        
+        # Agent configuration from ConfigMap
         - name: WATCH_NAMESPACE
-          value: "zen-cluster"
-        
+          value: {{ .Release.Namespace | quote }}
         - name: LOG_LEVEL
           value: "info"
-        
         - name: AGENT_PORT
           value: "8080"
-        
         - name: METRICS_PORT
           value: "9090"
         

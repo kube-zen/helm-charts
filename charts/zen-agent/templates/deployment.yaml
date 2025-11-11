@@ -37,8 +37,8 @@ spec:
       
       containers:
       - name: zen-agent
-        image: zubezen/zen-agent:latest
-        imagePullPolicy: Always
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         
         # Security Context (Container level)
         securityContext:
@@ -65,17 +65,27 @@ spec:
               name: zen-agent-config
               key: tenant-id
         
-        # Authentication from Secret
+        # Bootstrap authentication from Secret
         - name: BOOTSTRAP_TOKEN
           valueFrom:
             secretKeyRef:
-              name: zen-agent-token
-              key: token
-        - name: CLUSTER_TOKEN
+              name: zen-agent-secrets
+              key: bootstrap-token
+              optional: true
+        
+        # HMAC credentials (populated by agent after bootstrap)
+        - name: HMAC_KEY_ID
           valueFrom:
             secretKeyRef:
-              name: zen-agent-token
-              key: token
+              name: zen-agent-secrets
+              key: hmac-key-id
+              optional: true
+        - name: HMAC_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: zen-agent-secrets
+              key: hmac-key
+              optional: true
         
         # SaaS endpoints from ConfigMap
         - name: SAAS_API_URL
@@ -89,13 +99,9 @@ spec:
               name: zen-agent-config
               key: saas-ws-url
         
-        # Optional HMAC (future)
-        - name: HMAC_KEY
-          valueFrom:
-            secretKeyRef:
-              name: zen-agent-token
-              key: hmac-key
-              optional: true
+        # Secret name for agent to update after bootstrap
+        - name: SECRET_NAME
+          value: "zen-agent-secrets"
         
         # Agent configuration from ConfigMap
         - name: WATCH_NAMESPACE

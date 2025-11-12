@@ -9,7 +9,7 @@ zen-watcher:
   enabled: true
   image:
     repository: kubezen/zen-watcher
-    tag: "1.0.6"  # Use semantic versioning (immutable)
+    tag: "1.0.10"  # Use semantic versioning (immutable)
     pullPolicy: IfNotPresent
   
   # Auto-detect security tools (enabled by default)
@@ -27,24 +27,22 @@ zen-watcher:
   networkPolicy:
     enabled: true  # Always enabled for security
 
-# Multi-tenancy configuration (REQUIRED - set by UI during registration)
+# Multi-tenancy configuration (set by UI during registration)
 tenant:
-  id: ""  # REQUIRED: Tenant UUID from SaaS platform
+  id: ""  # Tenant UUID from SaaS platform
 
 cluster:
-  id: ""  # REQUIRED: Cluster UUID from SaaS platform
+  id: ""  # Cluster UUID from SaaS platform
 
 # SaaS connection
 saas:
-  endpoint: "https://api.kube-zen.io"  # Production API endpoint
+  endpoint: "https://api.kube-zen.io"
+  clusterToken: ""  # Bootstrap token from cluster registration
 
-# Bootstrap authentication (REQUIRED for first-time setup)
-# Per-cluster HMAC keys are derived via HKDF - no keys shipped in Helm
-bootstrap:
-  token: ""  # REQUIRED: One-time bootstrap token (15m TTL)
-             # Generate via UI or: ./scripts/generate-bootstrap-token.sh
-             # Token is consumed on first agent start and deleted from Secret
-             # HMAC key is derived and stored automatically
+# HMAC authentication (optional, disabled by default)
+hmac:
+  enabled: false
+  key: ""  # Per-tenant shared secret
 
 # Legacy PSP support (disabled by default, clusters without PSP will fail if enabled)
 psp:
@@ -58,3 +56,4 @@ resources:
   limits:
     cpu: 200m
     memory: 128Mi
+

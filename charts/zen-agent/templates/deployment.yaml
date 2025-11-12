@@ -26,23 +26,38 @@ spec:
         securityContext:
           {{- toYaml .Values.securityContext | nindent 10 }}
         env:
-        - name: SAAS_ENDPOINT
+        - name: SAAS_API_URL
           value: {{ .Values.saas.endpoint | quote }}
-        - name: CLUSTER_TOKEN
+        - name: BOOTSTRAP_TOKEN
           valueFrom:
             secretKeyRef:
-              name: zen-agent-secret
-              key: clusterToken
+              name: zen-agent-secrets
+              key: bootstrap-token
+              optional: true
+        - name: HMAC_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: zen-agent-secrets
+              key: hmac-key-id
+              optional: true
+        - name: HMAC_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: zen-agent-secrets
+              key: hmac-key
+              optional: true
         - name: TENANT_ID
           valueFrom:
             secretKeyRef:
-              name: zen-agent-secret
-              key: tenantId
+              name: zen-agent-secrets
+              key: tenant-id
         - name: CLUSTER_ID
           valueFrom:
             secretKeyRef:
-              name: zen-agent-secret
-              key: clusterId
+              name: zen-agent-secrets
+              key: cluster-id
+        - name: SECRET_NAME
+          value: zen-agent-secrets
         - name: WATCH_NAMESPACE
           value: {{ .Release.Namespace | quote }}
         - name: LOG_LEVEL

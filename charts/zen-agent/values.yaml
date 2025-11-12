@@ -1,59 +1,41 @@
-# zen-agent configuration
 image:
   repository: kubezen/zen-agent
-  tag: "1.0.0"  # Use semantic versioning (immutable)
-  pullPolicy: IfNotPresent  # Immutable tags don't need Always
+  tag: bootstrap
+  pullPolicy: IfNotPresent
 
-# zen-watcher dependency (installed automatically)
-zen-watcher:
-  enabled: true
-  image:
-    repository: kubezen/zen-watcher
-    tag: "1.0.10"  # Use semantic versioning (immutable)
-    pullPolicy: IfNotPresent
-  
-  # Auto-detect security tools (enabled by default)
-  autoDetect:
-    enabled: true  # Continuously detect installed security tools
-  
-  # Optional: Override auto-detected namespaces
-  namespaces:
-    kyverno: "kyverno"
-    trivy: "trivy-system"
-    falco: "falco"
-    kubeBench: "kube-bench"
-  
-  # NetworkPolicy
-  networkPolicy:
-    enabled: true  # Always enabled for security
-
-# Multi-tenancy configuration (set by UI during registration)
-tenant:
-  id: ""  # Tenant UUID from SaaS platform
-
-cluster:
-  id: ""  # Cluster UUID from SaaS platform
-
-# SaaS connection
 saas:
   endpoint: "https://api.kube-zen.io"
-  clusterToken: ""  # Bootstrap token from cluster registration
+  clusterToken: ""  # REQUIRED: Set via --set or override
 
-# HMAC authentication (optional, disabled by default)
-hmac:
-  enabled: false
-  key: ""  # Per-tenant shared secret
+tenant:
+  id: ""  # REQUIRED: Set via --set or override
 
-# Legacy PSP support (disabled by default, clusters without PSP will fail if enabled)
-psp:
-  enabled: false
+cluster:
+  id: ""  # REQUIRED: Set via --set or override
 
-# Resource limits
 resources:
-  requests:
-    cpu: 50m
-    memory: 64Mi
   limits:
-    cpu: 200m
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
     memory: 128Mi
 
+serviceAccount:
+  create: true
+  name: zen-agent
+
+rbac:
+  create: true
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true

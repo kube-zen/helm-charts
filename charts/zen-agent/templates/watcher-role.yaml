@@ -1,4 +1,3 @@
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -35,4 +34,3 @@ rules:
 - apiGroups: ["aquasecurity.github.io"]
   resources: ["vulnerabilityreports", "configauditreports", "exposedsecretreports", "rbacassessmentreports", "clustervulnerabilityreports"]
   verbs: ["get", "list", "watch"]
-

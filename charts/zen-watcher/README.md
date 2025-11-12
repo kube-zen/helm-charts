@@ -94,7 +94,8 @@ helm install zen-watcher kubezen/zen-watcher \
 | **Trivy** | ✅ Fully implemented | security | VulnerabilityReports → vulnerabilities | namespace/kind/name/vulnID |
 | **Kyverno** | ✅ Fully implemented | compliance | PolicyReports → policy-violations | namespace/kind/name/policy/rule |
 | **Kube-bench** | ✅ Fully implemented | compliance | ConfigMap JSON → CIS benchmark failures | testNumber |
-| **Falco** | ℹ️ Detection only | security | Requires falco-sidekick for events | - |
+| **Falco** | ✅ Fully implemented | security | Webhook endpoint for runtime events | rule/pod/output |
+| **Checkov** | ✅ Fully implemented | security | ConfigMap JSON → static analysis findings | checkId/resource |
 | **Audit logs** | ℹ️ Placeholder | compliance | Requires K8s audit webhook | - |
 
 ### Full Configuration

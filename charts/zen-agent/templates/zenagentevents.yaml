@@ -64,19 +64,19 @@ spec:
                   type: string
       subresources:
         status: {}
-    additionalPrinterColumns:
-    - name: Source
-      type: string
-      jsonPath: .spec.source
-    - name: Category
-      type: string
-      jsonPath: .spec.category
-    - name: Severity
-      type: string
-      jsonPath: .spec.severity
-    - name: Synced
-      type: boolean
-      jsonPath: .status.synced
-    - name: Age
-      type: date
-      jsonPath: .metadata.creationTimestamp
+      additionalPrinterColumns:
+      - name: Source
+        type: string
+        jsonPath: .spec.source
+      - name: Category
+        type: string
+        jsonPath: .spec.category
+      - name: Severity
+        type: string
+        jsonPath: .spec.severity
+      - name: Synced
+        type: boolean
+        jsonPath: .status.synced
+      - name: Age
+        type: date
+        jsonPath: .metadata.creationTimestamp

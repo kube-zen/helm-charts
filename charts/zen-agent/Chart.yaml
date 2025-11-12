@@ -2,8 +2,8 @@ apiVersion: v2
 name: zen-agent
 description: Zen Agent - Kubernetes remediation and observability agent
 type: application
-version: 0.1.5
-appVersion: "1.1.5-bootstrap"
+version: 0.1.6
+appVersion: "1.1.6-bootstrap"
 maintainers:
   - name: Kube Zen Team
     url: https://kube-zen.io

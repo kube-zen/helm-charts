@@ -26,11 +26,30 @@ spec:
       protocol: TCP
   
   egress:
-  # Allow all egress - Required for:
-  # - Kubernetes API access (10.43.0.1:443)
-  # - Cross-namespace pod listing for auto-detect
-  # - DNS resolution
-  # - External SaaS endpoint communication
-  - {}
+  # DNS
+  - ports:
+    - port: 53
+      protocol: UDP
+    to:
+    - namespaceSelector: {}
+      podSelector:
+        matchLabels:
+          k8s-app: kube-dns
+  
+  # Kubernetes API server (for auto-detect cross-namespace pod listing)
+  # Allow to anywhere on 443/6443 (includes service IP 10.43.0.1:443)
+  - ports:
+    - port: 443
+      protocol: TCP
+    - port: 6443
+      protocol: TCP
+  
+  # External SaaS endpoint (https://api.kube-zen.io)
+  - to:
+    - namespaceSelector: {}
+      podSelector: {}
+    ports:
+    - port: 443
+      protocol: TCP
 {{- end }}
 

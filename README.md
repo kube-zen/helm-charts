@@ -18,33 +18,55 @@ helm install zen-agent kube-zen/zen-agent \
 ## Available Charts
 
 ### zen-agent (Recommended)
-**Installs both zen-agent + zen-watcher in one command**
+**Complete security + remediation solution**
 
+- Installs zen-agent + zen-watcher (as dependency)
 - Automated security remediation
+- Syncs events with SaaS platform
 - Policy enforcement
 - Scheduled maintenance windows
-- Includes zen-watcher for event detection
+- Requires: cluster token, tenant ID, cluster ID
 
 ### zen-watcher (Standalone)
-Event detection and monitoring only (no remediation)
+**Event detection only (no SaaS communication)**
+
+- Standalone security event aggregator
+- Auto-detects: Trivy, Kyverno, Falco, Audit logs, Kube-bench
+- Creates ZenAgentEvent CRDs locally
+- No external communication
+- No token/tenant/cluster ID needed
+- Use case: Local event collection, testing, air-gapped environments
 
 ## Installation
 
 ### 1. Get Cluster Token
 Visit https://app.kube-zen.io/clusters and generate a token for your cluster.
 
-### 2. Install
+### 2. Install zen-agent (includes zen-watcher)
 ```bash
 helm install zen-agent kube-zen/zen-agent \
-  --set saas.clusterToken="<token>" \
+  --set saas.clusterToken="<bootstrap-token>" \
   --set saas.endpoint="https://api.kube-zen.io" \
-  --namespace zen-system --create-namespace
+  --set tenant.id="<tenant-uuid>" \
+  --set cluster.id="<cluster-uuid>" \
+  --namespace zen-cluster --create-namespace
+```
+
+**Or install zen-watcher standalone (no SaaS):**
+```bash
+helm install zen-watcher kube-zen/zen-watcher \
+  --namespace zen-cluster --create-namespace
 ```
 
 ### 3. Verify
 ```bash
-kubectl get pods -n zen-system
-# Should see: zen-agent and zen-watcher running
+kubectl get pods -n zen-cluster
+# zen-agent installation: shows zen-agent + zen-agent-zen-watcher
+# zen-watcher standalone: shows zen-watcher only
+
+# Check events being created
+kubectl get zenagentevents -A
+# Should show: SOURCE | CATEGORY | SEVERITY columns
 ```
 
 ## Configuration

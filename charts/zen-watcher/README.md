@@ -1,12 +1,12 @@
 # Zen Watcher Helm Chart
 
-Production-ready Helm chart for Zen Watcher with comprehensive security best practices.
+**Standalone security event aggregator** - Watches Trivy, Kyverno, Falco, Audit logs, and Kube-bench reports. Creates ZenAgentEvent CRDs locally. No external communication required.
 
 ## Prerequisites
 
 - Kubernetes 1.28+
 - Helm 3.8+
-- (Optional) Cosign for image verification
+- Security tools (auto-detected): Trivy, Kyverno, Falco, Kube-bench
 - (Optional) Prometheus Operator for ServiceMonitor
 
 ## Security Features
@@ -27,44 +27,34 @@ This Helm chart implements security best practices:
 
 ## Installation
 
-### Quick Start
+### Quick Start (Standalone)
 
 ```bash
-# Add Helm repository (when published)
-helm repo add zen-watcher https://charts.kube-zen.com
+# zen-watcher is typically installed as part of zen-agent
+# But you can install it standalone for event detection only
+
+# Add Helm repository
+helm repo add kubezen https://kube-zen.io/helm-charts
 helm repo update
 
-# Install with default settings
-helm install zen-watcher zen-watcher/zen-watcher \
-  --namespace zen-system \
-  --create-namespace \
-  --set global.clusterID=my-cluster
+# Install standalone (no cluster token needed)
+helm install zen-watcher kubezen/zen-watcher \
+  --namespace zen-cluster \
+  --create-namespace
 ```
 
-### Install from Local Chart
-
-```bash
-# Install from local directory
-helm install zen-watcher ./helm/zen-watcher \
-  --namespace zen-system \
-  --create-namespace \
-  --set global.clusterID=my-cluster
-```
+**Note:** zen-watcher is standalone - it only creates ZenAgentEvent CRDs locally. It does NOT communicate with external services. For full remediation capabilities, use `zen-agent` (which includes zen-watcher automatically).
 
 ### Production Installation
 
 ```bash
-helm install zen-watcher zen-watcher/zen-watcher \
-  --namespace zen-system \
+helm install zen-watcher kubezen/zen-watcher \
+  --namespace zen-cluster \
   --create-namespace \
-  --set global.clusterID=production-us-east-1 \
   --set networkPolicy.enabled=true \
-  --set podSecurityStandards.enabled=true \
-  --set image.verifySignature=true \
-  --set image.cosignPublicKey="<your-public-key>" \
-  --set serviceMonitor.enabled=true \
-  --set resources.limits.memory=512Mi \
-  --set resources.limits.cpu=500m
+  --set autoDetect.enabled=true \
+  --set resources.limits.memory=256Mi \
+  --set resources.limits.cpu=200m
 ```
 
 ## Configuration
@@ -73,16 +63,25 @@ helm install zen-watcher zen-watcher/zen-watcher \
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `global.clusterID` | Unique cluster identifier (required) | `my-cluster` |
-| `image.repository` | Image repository | `zubezen/zen-watcher` |
-| `image.tag` | Image tag | `1.0.0` |
-| `image.verifySignature` | Enable Cosign signature verification | `false` |
+| `image.repository` | Image repository | `kubezen/zen-watcher` |
+| `image.tag` | Image tag | `1.0.11` |
+| `autoDetect.enabled` | Auto-detect security tools (Kyverno, Trivy, Falco) | `true` |
 | `networkPolicy.enabled` | Enable NetworkPolicy | `true` |
-| `podSecurityStandards.enabled` | Enable Pod Security Standards | `true` |
-| `podSecurityStandards.enforce` | PSS enforcement level | `restricted` |
+| `resources.limits.memory` | Memory limit | `256Mi` |
+| `resources.limits.cpu` | CPU limit | `200m` |
+| `namespaces.kyverno` | Kyverno namespace | `kyverno` |
+| `namespaces.trivy` | Trivy namespace | `trivy-system` |
+| `namespaces.falco` | Falco namespace | `falco` |
 | `serviceMonitor.enabled` | Enable Prometheus ServiceMonitor | `false` |
-| `config.watchNamespace` | Namespace for CRDs | `zen-system` |
-| `config.behaviorMode` | Watcher mode | `all` |
+
+### Features
+
+- ✅ **Auto-detection** - Automatically detects installed security tools
+- ✅ **Deduplication** - Only creates NEW ZenAgentEvents (no duplicates)
+- ✅ **Category taxonomy** - security, compliance, performance
+- ✅ **Label-based filtering** - `source=trivy,category=security`
+- ✅ **NetworkPolicy** - Allows K8s API access for cross-namespace detection
+- ✅ **RBAC** - ClusterRole with read access to security reports
 
 ### Full Configuration
 

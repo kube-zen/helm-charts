@@ -2,7 +2,7 @@
 
 **Standalone security event aggregator** - Watches Trivy, Kyverno, Falco, Audit logs, and Kube-bench reports. Creates ZenAgentEvent CRDs locally. No external communication required.
 
-**Version:** v1.0.12 (Go 1.22)
+**Version:** v1.0.13 (Go 1.22)
 
 ## Prerequisites
 
@@ -66,7 +66,7 @@ helm install zen-watcher kubezen/zen-watcher \
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `image.repository` | Image repository | `kubezen/zen-watcher` |
-| `image.tag` | Image tag (Go 1.22) | `1.0.12` |
+| `image.tag` | Image tag (Go 1.22) | `1.0.13` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `autoDetect.enabled` | **Auto-detect security tools** - Continuously checks for Kyverno, Trivy, Falco pods in their namespaces | `true` |
 | `namespaces.kyverno` | Kyverno namespace to scan | `kyverno` |

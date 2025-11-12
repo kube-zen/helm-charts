@@ -11,6 +11,11 @@ rules:
   resources: ["configmaps", "pods", "pods/log", "namespaces"]
   verbs: ["get", "list", "watch"]
 
+# ZenAgentEvent CRD (create events from security tools)
+- apiGroups: ["zen.kube-zen.io"]
+  resources: ["zenagentevents"]
+  verbs: ["get", "list", "watch", "create", "update", "patch"]
+
 # ZenEvent CRD (legacy)
 - apiGroups: ["zen.kube-zen.com"]
   resources: ["zenevents"]

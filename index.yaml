@@ -3,7 +3,7 @@ entries:
   zen-agent:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-11T19:06:17.778347136-05:00"
+    created: "2025-11-12T13:42:22.481377023-05:00"
     dependencies:
     - condition: zen-watcher.enabled
       name: zen-watcher
@@ -26,11 +26,11 @@ entries:
     - https://github.com/kube-zen/zen-agent
     type: application
     urls:
-    - https://charts.kube-zen.io/zen-agent-1.0.1.tgz
+    - zen-agent-1.0.1.tgz
     version: 1.0.1
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-11T19:06:17.775581243-05:00"
+    created: "2025-11-12T13:42:22.479498878-05:00"
     dependencies:
     - condition: zen-watcher.enabled
       name: zen-watcher
@@ -53,8 +53,48 @@ entries:
     - https://github.com/kube-zen/zen-agent
     type: application
     urls:
-    - https://charts.kube-zen.io/zen-agent-1.0.0.tgz
+    - zen-agent-1.0.0.tgz
     version: 1.0.0
+  - apiVersion: v2
+    appVersion: 1.1.5-bootstrap
+    created: "2025-11-12T13:42:22.477560614-05:00"
+    description: Zen Agent - Kubernetes remediation and observability agent
+    digest: 0ee1b46b1607bb11a44c173f52caf91dfb894b2dd4d12c7ae3dd343891071762
+    home: https://kube-zen.io
+    keywords:
+    - observability
+    - remediation
+    - kubernetes
+    maintainers:
+    - name: Kube Zen Team
+      url: https://kube-zen.io
+    name: zen-agent
+    sources:
+    - https://github.com/kube-zen/zen-agent
+    type: application
+    urls:
+    - zen-agent-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
+    appVersion: bootstrap
+    created: "2025-11-12T13:42:22.473364057-05:00"
+    description: Zen Agent - Kubernetes remediation and observability agent
+    digest: 2c70521ee2a574c799523ca1611f9cb9f3ae9b3695897b76d11f071febee4967
+    home: https://kube-zen.io
+    keywords:
+    - observability
+    - remediation
+    - kubernetes
+    maintainers:
+    - name: Kube Zen Team
+      url: https://kube-zen.io
+    name: zen-agent
+    sources:
+    - https://github.com/kube-zen/zen-agent
+    type: application
+    urls:
+    - zen-agent-0.1.3.tgz
+    version: 0.1.3
   zen-watcher:
   - annotations:
       artifacthub.io/containsSecurityUpdates: "true"
@@ -69,7 +109,7 @@ entries:
         url: https://keybase.io/your-keybase
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-11-11T19:06:17.780499106-05:00"
+    created: "2025-11-12T13:42:22.482608921-05:00"
     description: Universal Kubernetes Event Aggregator - Secure, Extensible Event
       Collection
     digest: 476f64442e1cf949d4f73a5f72f0796a781aeca753e302514ea83afe54673591
@@ -90,6 +130,6 @@ entries:
     - https://github.com/your-org/zen-watcher
     type: application
     urls:
-    - https://charts.kube-zen.io/zen-watcher-1.0.0.tgz
+    - zen-watcher-1.0.0.tgz
     version: 1.0.0
-generated: "2025-11-11T19:06:17.771941106-05:00"
+generated: "2025-11-12T13:42:22.467494668-05:00"

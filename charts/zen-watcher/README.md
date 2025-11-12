@@ -2,7 +2,7 @@
 
 **Standalone security event aggregator** - Watches Trivy, Kyverno, Falco, Audit logs, and Kube-bench reports. Creates ZenAgentEvent CRDs locally. No external communication required.
 
-**Version:** v1.0.15 (Go 1.22)
+**Version:** v1.0.19+ (Go 1.22)
 
 ## Prerequisites
 

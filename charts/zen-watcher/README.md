@@ -2,6 +2,8 @@
 
 **Standalone security event aggregator** - Watches Trivy, Kyverno, Falco, Audit logs, and Kube-bench reports. Creates ZenAgentEvent CRDs locally. No external communication required.
 
+**Version:** v1.0.11 (Go 1.22)
+
 ## Prerequisites
 
 - Kubernetes 1.28+
@@ -64,14 +66,16 @@ helm install zen-watcher kubezen/zen-watcher \
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `image.repository` | Image repository | `kubezen/zen-watcher` |
-| `image.tag` | Image tag | `1.0.11` |
-| `autoDetect.enabled` | Auto-detect security tools (Kyverno, Trivy, Falco) | `true` |
-| `networkPolicy.enabled` | Enable NetworkPolicy | `true` |
+| `image.tag` | Image tag (Go 1.22) | `1.0.11` |
+| `image.pullPolicy` | Image pull policy | `IfNotPresent` |
+| `autoDetect.enabled` | **Auto-detect security tools** - Continuously checks for Kyverno, Trivy, Falco pods in their namespaces | `true` |
+| `namespaces.kyverno` | Kyverno namespace to scan | `kyverno` |
+| `namespaces.trivy` | Trivy namespace to scan | `trivy-system` |
+| `namespaces.falco` | Falco namespace to scan | `falco` |
+| `namespaces.kubeBench` | Kube-bench namespace to scan | `kube-bench` |
+| `networkPolicy.enabled` | Enable NetworkPolicy (required for cross-namespace pod detection) | `true` |
 | `resources.limits.memory` | Memory limit | `256Mi` |
 | `resources.limits.cpu` | CPU limit | `200m` |
-| `namespaces.kyverno` | Kyverno namespace | `kyverno` |
-| `namespaces.trivy` | Trivy namespace | `trivy-system` |
-| `namespaces.falco` | Falco namespace | `falco` |
 | `serviceMonitor.enabled` | Enable Prometheus ServiceMonitor | `false` |
 
 ### Features

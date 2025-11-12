@@ -2,180 +2,69 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: zen-agent
-  namespace: zen-cluster
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: zen-agent
-    app.kubernetes.io/version: "1.0.0"
-    app.kubernetes.io/component: security-remediation
-    app.kubernetes.io/part-of: zen
+    app.kubernetes.io/instance: {{ .Release.Name }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: zen-agent
+      app: zen-agent
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: zen-agent
-        app.kubernetes.io/version: "1.0.0"
-        app.kubernetes.io/component: security-remediation
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9090"
-        prometheus.io/path: "/metrics"
+        app: zen-agent
     spec:
-      serviceAccountName: zen-agent
-      
-      # Security Context (Pod level)
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
-        runAsNonRoot: true
-        runAsUser: 65532  # distroless nonroot user
-        runAsGroup: 65532
-        fsGroup: 65532
-        seccompProfile:
-          type: RuntimeDefault
-      
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
       - name: zen-agent
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        
-        # Security Context (Container level)
         securityContext:
-          allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          runAsUser: 65532
-          capabilities:
-            drop:
-            - ALL
-          seccompProfile:
-            type: RuntimeDefault
-        
+          {{- toYaml .Values.securityContext | nindent 10 }}
         env:
-        # Identity from ConfigMap
-        - name: CLUSTER_ID
+        - name: SAAS_ENDPOINT
+          value: {{ .Values.saas.endpoint | quote }}
+        - name: CLUSTER_TOKEN
           valueFrom:
-            configMapKeyRef:
-              name: zen-agent-config
-              key: cluster-id
+            secretKeyRef:
+              name: zen-agent-secret
+              key: clusterToken
         - name: TENANT_ID
           valueFrom:
-            configMapKeyRef:
-              name: zen-agent-config
-              key: tenant-id
-        
-        # Bootstrap authentication from Secret
-        - name: BOOTSTRAP_TOKEN
+            secretKeyRef:
+              name: zen-agent-secret
+              key: tenantId
+        - name: CLUSTER_ID
           valueFrom:
             secretKeyRef:
-              name: zen-agent-secrets
-              key: bootstrap-token
-              optional: true
-        
-        # HMAC credentials (populated by agent after bootstrap)
-        - name: HMAC_KEY_ID
-          valueFrom:
-            secretKeyRef:
-              name: zen-agent-secrets
-              key: hmac-key-id
-              optional: true
-        - name: HMAC_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: zen-agent-secrets
-              key: hmac-key
-              optional: true
-        
-        # SaaS endpoints from ConfigMap
-        - name: SAAS_API_URL
-          valueFrom:
-            configMapKeyRef:
-              name: zen-agent-config
-              key: saas-api-url
-        - name: SAAS_WS_URL
-          valueFrom:
-            configMapKeyRef:
-              name: zen-agent-config
-              key: saas-ws-url
-        
-        # Secret name for agent to update after bootstrap
-        - name: SECRET_NAME
-          value: "zen-agent-secrets"
-        
-        # Agent configuration from ConfigMap
+              name: zen-agent-secret
+              key: clusterId
         - name: WATCH_NAMESPACE
           value: {{ .Release.Namespace | quote }}
         - name: LOG_LEVEL
           value: "info"
-        - name: AGENT_PORT
-          value: "8080"
-        - name: METRICS_PORT
-          value: "9090"
-        
         ports:
-        - name: api
+        - name: http
           containerPort: 8080
           protocol: TCP
-        
         - name: metrics
           containerPort: 9090
           protocol: TCP
-        
         livenessProbe:
           httpGet:
-            path: /health
-            port: 9090
-          initialDelaySeconds: 10
-          periodSeconds: 30
-          timeoutSeconds: 5
-          failureThreshold: 3
-        
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /readiness
-            port: 9090
+            path: /healthz
+            port: 8080
           initialDelaySeconds: 5
-          periodSeconds: 10
-          timeoutSeconds: 3
-          failureThreshold: 3
-        
+          periodSeconds: 5
         resources:
-          requests:
-            cpu: 10m
-            memory: 50Mi
-          limits:
-            cpu: 500m
-            memory: 256Mi
-        
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
-        - name: cache
-          mountPath: /.cache
-      
-      volumes:
-      - name: tmp
-        emptyDir: {}
-      - name: cache
-        emptyDir: {}
-      
-      # Anti-affinity (don't run multiple agents on same node)
-      affinity:
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: app.kubernetes.io/name
-                  operator: In
-                  values:
-                  - zen-agent
-              topologyKey: kubernetes.io/hostname
-      
-      # Tolerate control plane taints if needed
-      tolerations:
-      - key: node-role.kubernetes.io/control-plane
-        operator: Exists
-        effect: NoSchedule
+          {{- toYaml .Values.resources | nindent 10 }}

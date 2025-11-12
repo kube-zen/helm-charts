@@ -2,7 +2,7 @@
 
 **Standalone security event aggregator** - Watches Trivy, Kyverno, Falco, Audit logs, and Kube-bench reports. Creates ZenAgentEvent CRDs locally. No external communication required.
 
-**Version:** v1.0.13 (Go 1.22)
+**Version:** v1.0.15 (Go 1.22)
 
 ## Prerequisites
 
@@ -66,7 +66,7 @@ helm install zen-watcher kubezen/zen-watcher \
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `image.repository` | Image repository | `kubezen/zen-watcher` |
-| `image.tag` | Image tag (Go 1.22) | `1.0.13` |
+| `image.tag` | Image tag (Go 1.22) | `1.0.15` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `autoDetect.enabled` | **Auto-detect security tools** - Continuously checks for Kyverno, Trivy, Falco pods in their namespaces | `true` |
 | `namespaces.kyverno` | Kyverno namespace to scan | `kyverno` |
@@ -89,13 +89,13 @@ helm install zen-watcher kubezen/zen-watcher \
 
 ### Supported Security Tools
 
-| Tool | Status | Category | Event Type |
-|------|--------|----------|------------|
-| **Trivy** | ✅ Fully implemented | security | VulnerabilityReports → vulnerabilities |
-| **Kyverno** | ✅ Fully implemented | compliance | PolicyReports → policy-violations |
-| **Falco** | ℹ️ Detection only | security | Requires falco-sidekick for events |
-| **Kube-bench** | ℹ️ Detection only | compliance | Requires custom result parser |
-| **Audit logs** | ℹ️ Placeholder | compliance | Requires K8s audit webhook |
+| Tool | Status | Category | Event Type | Dedup Key |
+|------|--------|----------|------------|-----------|
+| **Trivy** | ✅ Fully implemented | security | VulnerabilityReports → vulnerabilities | namespace/kind/name/vulnID |
+| **Kyverno** | ✅ Fully implemented | compliance | PolicyReports → policy-violations | namespace/kind/name/policy/rule |
+| **Kube-bench** | ✅ Fully implemented | compliance | ConfigMap JSON → CIS benchmark failures | testNumber |
+| **Falco** | ℹ️ Detection only | security | Requires falco-sidekick for events | - |
+| **Audit logs** | ℹ️ Placeholder | compliance | Requires K8s audit webhook | - |
 
 ### Full Configuration
 

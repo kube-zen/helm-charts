@@ -36,20 +36,15 @@ spec:
         matchLabels:
           k8s-app: kube-dns
   
-  # Kubernetes API server (for auto-detect cross-namespace pod listing)
-  # Allow to anywhere on 443/6443 (includes service IP 10.43.0.1:443)
+  # Kubernetes API server + External HTTPS
+  # NO 'to' restriction allows traffic to:
+  # - K8s API service IP (10.43.0.1:443)  
+  # - External SaaS (https://api.kube-zen.io)
+  # Required for auto-detect cross-namespace pod listing
   - ports:
     - port: 443
       protocol: TCP
     - port: 6443
-      protocol: TCP
-  
-  # External SaaS endpoint (https://api.kube-zen.io)
-  - to:
-    - namespaceSelector: {}
-      podSelector: {}
-    ports:
-    - port: 443
       protocol: TCP
 {{- end }}
 

@@ -1,6 +1,0 @@
-dependencies:
-- name: zen-watcher
-  repository: file://../zen-watcher
-  version: 1.0.0
-digest: sha256:459eb113de5f3d6e7c7c2662b453af15d2b03a99426d13aa30df9c5b7face0e0
-generated: "2025-11-09T20:38:21.073022853-05:00"

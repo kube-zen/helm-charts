@@ -19,15 +19,27 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        seccompProfile:
+          type: RuntimeDefault
       containers:
       - name: zen-agent
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         securityContext:
           {{- toYaml .Values.securityContext | nindent 10 }}
+          seccompProfile:
+            type: RuntimeDefault
         env:
-        - name: SAAS_API_URL
-          value: {{ .Values.saas.endpoint | quote }}
+        - name: SAAS_API_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: saas-api-base
+        - name: SAAS_WS_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: saas-ws-base
         - name: BOOTSTRAP_TOKEN
           valueFrom:
             secretKeyRef:
@@ -71,15 +83,15 @@ spec:
           protocol: TCP
         livenessProbe:
           httpGet:
-            path: /healthz
-            port: 8080
-          initialDelaySeconds: 30
+            path: /health
+            port: 9090
+          initialDelaySeconds: 10
           periodSeconds: 10
         readinessProbe:
           httpGet:
-            path: /healthz
-            port: 8080
-          initialDelaySeconds: 5
+            path: /readyz
+            port: 9090
+          initialDelaySeconds: 10
           periodSeconds: 5
         resources:
           {{- toYaml .Values.resources | nindent 10 }}

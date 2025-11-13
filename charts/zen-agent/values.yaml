@@ -4,7 +4,8 @@ image:
   pullPolicy: IfNotPresent
 
 saas:
-  endpoint: "https://api.kube-zen.io"
+  apiBase: "https://api.kube-zen.io"  # Public SaaS API base (must be https://, no .svc.cluster.local)
+  wsBase: "wss://ws.kube-zen.io"      # Public SaaS WS base (must be wss://, no .svc.cluster.local)
   clusterToken: ""  # REQUIRED: Set via --set or override
 
 tenant:

@@ -89,7 +89,6 @@ spec:
         - name: TLS_INSECURE
           value: "true"
         {{- end }}
-          value: "info"
         ports:
         - name: http
           containerPort: 8080

@@ -40,10 +40,23 @@ securityContext:
     drop:
       - ALL
   readOnlyRootFilesystem: true
+
+# CA certificate mount (preferred over tlsInsecure for dev)
+# Mount a custom CA cert to trust self-signed certificates in dev environments
 caMount:
   enabled: false
   configMapName: zen-agent-ca
   mountPath: /usr/local/share/ca-certificates
 
-# TLS insecure mode (dev only - skips cert verification)
+# TLS insecure mode (DEV ONLY - NEVER USE IN PROD/STAGING)
+# ⚠️  SECURITY WARNING: This disables TLS certificate verification.
+# ⚠️  This is a dev-only escape hatch for local testing with self-signed certs.
+# ⚠️  Precheck will FAIL if tlsInsecure=true and environment != dev.
+# ⚠️  Prefer caMount + proper CA trust instead of tlsInsecure.
+# Default: false (secure-by-default)
 tlsInsecure: false
+
+# Environment label (used for gating tlsInsecure)
+# Must be set to "dev" to allow tlsInsecure=true
+# Values: dev, staging, prod
+environment: ""

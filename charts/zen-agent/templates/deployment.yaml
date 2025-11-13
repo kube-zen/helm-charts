@@ -73,6 +73,14 @@ spec:
         - name: WATCH_NAMESPACE
           value: {{ .Release.Namespace | quote }}
         - name: LOG_LEVEL
+        {{- if .Values.caMount.enabled }}
+        - name: TLS_CA_FILE
+          value: {{ printf "%s/custom.crt" .Values.caMount.mountPath | quote }}
+        {{- end }}
+        {{- if .Values.tlsInsecure }}
+        - name: TLS_INSECURE
+          value: "true"
+        {{- end }}
           value: "info"
         ports:
         - name: http

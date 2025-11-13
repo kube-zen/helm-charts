@@ -40,3 +40,10 @@ securityContext:
     drop:
       - ALL
   readOnlyRootFilesystem: true
+caMount:
+  enabled: false
+  configMapName: zen-agent-ca
+  mountPath: /usr/local/share/ca-certificates
+
+# TLS insecure mode (dev only - skips cert verification)
+tlsInsecure: false

@@ -1,6 +1,6 @@
 # Zen Watcher Helm Chart
 
-**Standalone security event aggregator** - Watches Trivy, Kyverno, Falco, Audit logs, and Kube-bench reports. Creates ZenAgentEvent CRDs locally. No external communication required.
+**Standalone security event aggregator** - Watches Trivy, Kyverno, Falco, Audit logs, and Kube-bench reports. Creates Observation CRDs locally. No external communication required.
 
 **Version:** v1.0.19+ (Go 1.22)
 
@@ -45,7 +45,7 @@ helm install zen-watcher kubezen/zen-watcher \
   --create-namespace
 ```
 
-**Note:** zen-watcher is standalone - it only creates ZenAgentEvent CRDs locally. It does NOT communicate with external services. For full remediation capabilities, use `zen-agent` (which includes zen-watcher automatically).
+**Note:** zen-watcher is standalone - it only creates Observation CRDs locally. It does NOT communicate with external services. For full remediation capabilities, use `zen-agent` (which includes zen-watcher automatically).
 
 ### Production Installation
 
@@ -81,7 +81,7 @@ helm install zen-watcher kubezen/zen-watcher \
 ### Features
 
 - ✅ **Auto-detection** - Automatically detects installed security tools
-- ✅ **Deduplication** - Only creates NEW ZenAgentEvents (no duplicates)
+- ✅ **Deduplication** - Only creates NEW Observations (no duplicates)
 - ✅ **Category taxonomy** - security, compliance, performance
 - ✅ **Label-based filtering** - `source=trivy,category=security`, `source=kyverno,category=compliance`
 - ✅ **NetworkPolicy** - Allows K8s API access for cross-namespace detection

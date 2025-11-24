@@ -25,7 +25,7 @@ rules:
   resources: ["clusterpolicies", "policies"]
   verbs: ["get", "list", "watch"]
 - apiGroups: ["zen.kube-zen.io"]
-  resources: ["zenagentevents"]
+  resources: ["observations"]
   verbs: ["get", "list", "watch", "create", "update", "patch"]
 {{- with .Values.rbac.additionalRules }}
 {{- toYaml . | nindent 0 }}

@@ -32,7 +32,7 @@ helm install zen-agent kube-zen/zen-agent \
 
 - Standalone security event aggregator
 - Auto-detects: Trivy, Kyverno, Falco, Audit logs, Kube-bench
-- Creates ZenAgentEvent CRDs locally
+- Creates Observation CRDs locally
 - No external communication
 - No token/tenant/cluster ID needed
 - Use case: Local event collection, testing, air-gapped environments
@@ -65,7 +65,7 @@ kubectl get pods -n zen-cluster
 # zen-watcher standalone: shows zen-watcher only
 
 # Check events being created
-kubectl get zenagentevents -A
+kubectl get observations -A
 # Should show: SOURCE | CATEGORY | SEVERITY columns
 ```
 

@@ -10,9 +10,9 @@ rules:
   resources: ["configmaps", "pods", "pods/log", "namespaces"]
   verbs: ["get", "list", "watch"]
 
-# ZenAgentEvent CRD (create events from security tools)
+# Observation CRD (create events from security tools)
 - apiGroups: ["zen.kube-zen.io"]
-  resources: ["zenagentevents"]
+  resources: ["observations"]
   verbs: ["get", "list", "watch", "create", "update", "patch"]
 
 # ZenEvent CRD (legacy)

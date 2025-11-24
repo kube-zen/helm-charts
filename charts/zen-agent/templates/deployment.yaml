@@ -70,6 +70,16 @@ spec:
               key: cluster-id
         - name: SECRET_NAME
           value: zen-agent-secrets
+        - name: SAAS_API_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: saas-api-url
+        - name: SAAS_WS_BASE
+          valueFrom:
+            configMapKeyRef:
+              name: zen-agent-config
+              key: saas-ws-url
         - name: WATCH_NAMESPACE
           value: {{ .Release.Namespace | quote }}
         - name: LOG_LEVEL

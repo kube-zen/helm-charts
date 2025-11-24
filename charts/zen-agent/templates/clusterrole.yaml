@@ -17,7 +17,7 @@ rules:
   resources: ["jobs", "cronjobs"]
   verbs: ["get", "list", "watch"]
 - apiGroups: ["zen.kube-zen.io"]
-  resources: ["zenagentevents", "zenagentremediations"]
+  resources: ["observations", "zenagentremediations"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 {{- end }}
 

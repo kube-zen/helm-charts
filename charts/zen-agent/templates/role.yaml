@@ -6,14 +6,14 @@ metadata:
     app.kubernetes.io/name: zen-agent
     app.kubernetes.io/component: security-remediation
 rules:
-# ZenAgentEvent CRDs - READ ONLY (created by zen-watcher)
+# Observation CRDs - READ ONLY (created by zen-watcher)
 - apiGroups: ["zen.kube-zen.io"]
-  resources: ["zenagentevents"]
+  resources: ["observations"]
   verbs: ["get", "list", "watch"]
 
-# ZenAgentEvent status - UPDATE ONLY (mark as synced)
+# Observation status - UPDATE ONLY (mark as synced)
 - apiGroups: ["zen.kube-zen.io"]
-  resources: ["zenagentevents/status"]
+  resources: ["observations/status"]
   verbs: ["get", "update", "patch"]
 
 # ZenAgentRemediation CRDs - CREATE, READ, UPDATE (NO DELETE!)

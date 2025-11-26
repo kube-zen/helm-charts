@@ -192,7 +192,7 @@ helm upgrade zen-watcher zen-watcher/zen-watcher \
 helm uninstall zen-watcher --namespace zen-system
 
 # Remove CRDs (if needed)
-kubectl delete crd zenevents.zen.kube-zen.com
+kubectl delete crd observations.zen.kube-zen.io
 ```
 
 ## Verification

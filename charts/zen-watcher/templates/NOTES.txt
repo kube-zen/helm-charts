@@ -8,9 +8,9 @@ Namespace: {{ include "zen-watcher.namespace" . }}
 
   kubectl --namespace {{ include "zen-watcher.namespace" . }} get pods -l "app.kubernetes.io/name={{ include "zen-watcher.name" . }},app.kubernetes.io/instance={{ .Release.Name }}"
 
-🔍 View ZenEvent CRDs:
+🔍 View Observation CRDs:
 
-  kubectl get zenevents -n {{ .Values.config.watchNamespace }}
+  kubectl get observations -n {{ .Values.config.watchNamespace }}
 
 🏥 Health Check:
 
@@ -75,9 +75,9 @@ Namespace: {{ include "zen-watcher.namespace" . }}
 
 🎯 Next Steps:
 
-1. Monitor events: kubectl get zenevents -n {{ .Values.config.watchNamespace }} --watch
+1. Monitor events: kubectl get observations -n {{ .Values.config.watchNamespace }} --watch
 2. View logs: kubectl logs -n {{ include "zen-watcher.namespace" . }} -l app.kubernetes.io/name={{ include "zen-watcher.name" . }} -f
-3. Check status: kubectl get zenevents -n {{ .Values.config.watchNamespace }} -l category=security
+3. Check status: kubectl get observations -n {{ .Values.config.watchNamespace }} -l category=security
 
 Happy Event Aggregating! 🚀
 

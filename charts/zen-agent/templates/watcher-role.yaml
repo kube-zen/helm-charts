@@ -15,11 +15,6 @@ rules:
   resources: ["observations"]
   verbs: ["get", "list", "watch", "create", "update", "patch"]
 
-# ZenEvent CRD (legacy)
-- apiGroups: ["zen.kube-zen.com"]
-  resources: ["zenevents"]
-  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
-
 # Kyverno PolicyReports
 - apiGroups: ["wgpolicyk8s.io"]
   resources: ["policyreports", "clusterpolicyreports"]

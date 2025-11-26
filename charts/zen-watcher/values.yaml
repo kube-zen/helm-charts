@@ -81,11 +81,19 @@ networkPolicy:
   
   # Ingress rules
   ingress:
-    # Allow from Prometheus for metrics scraping
+    # Allow from Prometheus/VictoriaMetrics for metrics scraping
     - from:
       - namespaceSelector:
           matchLabels:
             name: monitoring
+      ports:
+      - protocol: TCP
+        port: 8080
+    # Allow from VictoriaMetrics namespace (for demo)
+    - from:
+      - namespaceSelector:
+          matchLabels:
+            name: victoriametrics
       ports:
       - protocol: TCP
         port: 8080

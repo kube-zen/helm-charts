@@ -15,9 +15,9 @@ spec:
       {{- include "zen-watcher.selectorLabels" . | nindent 6 }}
   endpoints:
   - port: http
-    interval: {{ .Values.vmServiceScrape.interval }}
-    scrapeTimeout: {{ .Values.vmServiceScrape.scrapeTimeout }}
-    path: {{ .Values.vmServiceScrape.path }}
+    interval: {{ .Values.vmServiceScrape.interval | default "30s" }}
+    scrapeTimeout: {{ .Values.vmServiceScrape.scrapeTimeout | default "10s" }}
+    path: {{ .Values.vmServiceScrape.path | default "/metrics" }}
     {{- with .Values.vmServiceScrape.relabelings }}
     relabelings:
       {{- toYaml . | nindent 4 }}

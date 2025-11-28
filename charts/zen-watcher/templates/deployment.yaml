@@ -24,6 +24,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
+        app: zen-watcher
         {{- include "zen-watcher.selectorLabels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}

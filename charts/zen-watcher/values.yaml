@@ -191,6 +191,16 @@ serviceMonitor:
   relabelings: []
   metricRelabelings: []
 
+## VMServiceScrape (VictoriaMetrics Operator)
+vmServiceScrape:
+  enabled: false
+  interval: 30s
+  scrapeTimeout: 10s
+  path: /metrics
+  labels: {}
+  relabelings: []
+  metricRelabelings: []
+
 ## Pod Disruption Budget
 podDisruptionBudget:
   enabled: false

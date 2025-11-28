@@ -1,0 +1,13 @@
+{{- if and .Values.podSecurityStandards.enabled (semverCompare ">=1.25-0" .Capabilities.KubeVersion.GitVersion) }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "zen-watcher.namespace" . }}
+  labels:
+    {{- include "zen-watcher.labels" . | nindent 4 }}
+    pod-security.kubernetes.io/enforce: {{ .Values.podSecurityStandards.enforce }}
+    pod-security.kubernetes.io/audit: {{ .Values.podSecurityStandards.audit }}
+    pod-security.kubernetes.io/warn: {{ .Values.podSecurityStandards.warn }}
+{{- end }}
+
+

@@ -2,7 +2,20 @@
 
 **Standalone security event aggregator** - Watches Trivy, Kyverno, Falco, Audit logs, and Kube-bench reports. Creates Observation CRDs locally. No external communication required.
 
-**Version:** v1.0.19+ (Go 1.22)
+**Source Code:** [github.com/kube-zen/zen-watcher](https://github.com/kube-zen/zen-watcher)
+
+## CRD Management
+
+⚠️ **Important**: The Observation CRD (`templates/observation_crd.yaml`) is synced from the zen-watcher repository and should not be edited here. See [CRD_SYNC.md](CRD_SYNC.md) for details.
+
+## Version Compatibility
+
+| Chart Version | App Version (Image Tag) | Kubernetes | Go Version | Notes |
+|---------------|-------------------------|------------|------------|-------|
+| 1.0.0         | 1.0.0                   | 1.26-1.29  | 1.23+      | Initial release |
+
+**Current Chart Version:** 1.0.0  
+**Current App Version:** 1.0.0 (Go 1.23+)
 
 ## Prerequisites
 
@@ -271,15 +284,18 @@ kubectl run -it --rm debug --image=busybox --restart=Never -n zen-system -- \
 
 ## Contributing
 
-See [CONTRIBUTING.md](../../CONTRIBUTING.md) for contribution guidelines.
+- **Chart changes**: Contribute to this repository ([helm-charts](https://github.com/kube-zen/helm-charts))
+- **Application changes**: Contribute to the source repository ([zen-watcher](https://github.com/kube-zen/zen-watcher))
+- See [zen-watcher CONTRIBUTING.md](https://github.com/kube-zen/zen-watcher/blob/main/CONTRIBUTING.md) for contribution guidelines
 
 ## License
 
-Apache 2.0 - See [LICENSE](../../LICENSE) for details.
+Apache 2.0 - See [zen-watcher LICENSE](https://github.com/kube-zen/zen-watcher/blob/main/LICENSE) for details.
 
 ## Support
 
-- GitHub Issues: https://github.com/your-org/zen-watcher/issues
-- Documentation: https://github.com/your-org/zen-watcher/wiki
+- **Source Code**: [github.com/kube-zen/zen-watcher](https://github.com/kube-zen/zen-watcher)
+- **Issues**: [github.com/kube-zen/zen-watcher/issues](https://github.com/kube-zen/zen-watcher/issues)
+- **Documentation**: [zen-watcher README](https://github.com/kube-zen/zen-watcher/blob/main/README.md)
 
 

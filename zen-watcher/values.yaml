@@ -80,31 +80,31 @@ networkPolicy:
     - Egress
   
   # Ingress rules
-  ingress:
-    # Allow from Prometheus/VictoriaMetrics for metrics scraping
-    - from:
-      - namespaceSelector:
-          matchLabels:
-            name: monitoring
-      ports:
-      - protocol: TCP
-        port: 8080
-    # Allow from VictoriaMetrics namespace (for demo)
-    - from:
-      - namespaceSelector:
-          matchLabels:
-            name: victoriametrics
-      ports:
-      - protocol: TCP
-        port: 8080
-    # Allow from ingress-nginx for ingress access
-    - from:
-      - namespaceSelector:
-          matchLabels:
-            name: ingress-nginx
-      ports:
-      - protocol: TCP
-        port: 8080
+  # By default, NetworkPolicy is OPEN (allows all ingress traffic)
+  # To restrict access, uncomment and customize the example below
+  #
+  # Example: Allow from multiple namespaces (Falco + monitoring + kube-system)
+  #   - from:
+  #     - namespaceSelector:
+  #         matchLabels:
+  #           name: falco
+  #     - namespaceSelector:
+  #         matchLabels:
+  #           name: monitoring
+  #     - namespaceSelector:
+  #         matchLabels:
+  #           name: kube-system
+  #     ports:
+  #     - protocol: TCP
+  #       port: 8080
+  #
+  # Note: namespaceSelector requires namespaces to have matching labels
+  # To add label: kubectl label namespace <ns> name=<ns>
+  # To detect Falco: kubectl get pods -A -l app.kubernetes.io/name=falco
+  # To detect Prometheus: kubectl get pods -A -l app.kubernetes.io/name=prometheus
+  #
+  # Leave empty to allow all ingress (default)
+  ingress: []
   
   # Egress rules
   egress:

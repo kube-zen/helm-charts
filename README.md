@@ -2,6 +2,10 @@
 
 Official Helm charts for Zero-Effort Kubernetes security and remediation platform.
 
+**Source Repositories:**
+- **zen-watcher**: [github.com/kube-zen/zen-watcher](https://github.com/kube-zen/zen-watcher)
+- **zen-agent**: [github.com/kube-zen/zen-agent](https://github.com/kube-zen/zen-agent) (if applicable)
+
 ## Quick Start
 
 ```bash
@@ -69,9 +73,30 @@ kubectl get observations -A
 # Should show: SOURCE | CATEGORY | SEVERITY columns
 ```
 
+## Version Compatibility
+
+### zen-watcher Chart
+
+| Chart Version | App Version (Image Tag) | Kubernetes | Go Version | Notes |
+|---------------|-------------------------|------------|------------|-------|
+| 1.0.0         | 1.0.0                   | 1.26-1.29  | 1.23+      | Initial release |
+
+See individual chart READMEs for detailed version information.
+
 ## Configuration
 
 See `values.yaml` in each chart for all options.
+
+## Repository Structure
+
+This repository contains Helm charts for Kube-Zen projects:
+
+- **zen-watcher**: Event aggregation operator (Apache 2.0)
+- **zen-agent**: Remediation agent (Proprietary)
+
+**Source Code Repositories:**
+- zen-watcher: [github.com/kube-zen/zen-watcher](https://github.com/kube-zen/zen-watcher)
+- zen-agent: [github.com/kube-zen/zen-agent](https://github.com/kube-zen/zen-agent) (if applicable)
 
 ## License
 
@@ -80,5 +105,6 @@ See `values.yaml` in each chart for all options.
 
 ## Support
 
-https://kube-zen.io/support
+- **zen-watcher**: [github.com/kube-zen/zen-watcher/issues](https://github.com/kube-zen/zen-watcher/issues)
+- **General**: https://kube-zen.io/support
 

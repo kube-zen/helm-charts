@@ -56,6 +56,10 @@ spec:
                 detectedAt:
                   type: string
                   format: date-time
+                ttlSecondsAfterCreation:
+                  type: integer
+                  description: "TTL in seconds after creation (Kubernetes native style, like Jobs). Observation will be deleted after this duration. If not set, uses default TTL from GC configuration."
+                  minimum: 1
             status:
               type: object
               properties:

@@ -2,11 +2,11 @@ apiVersion: v2
 name: zen-watcher
 description: Universal Kubernetes Event Aggregator - Secure, Extensible Event Collection
 type: application
-version: 1.0.0
-appVersion: "1.0.0"
-home: https://github.com/your-org/zen-watcher
+version: 1.0.1
+appVersion: "1.0.19"
+home: https://github.com/kube-zen/zen-watcher
 sources:
-  - https://github.com/your-org/zen-watcher
+  - https://github.com/kube-zen/zen-watcher
 keywords:
   - security
   - compliance

@@ -31,7 +31,7 @@ rules:
   resources: ["observations"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["aquasecurity.github.io"]
-  resources: ["vulnerabilityreports", "clustervulnerabilityreports", "configauditreports", "clusterconfigauditreports", "exposedsecretsreports", "clusterexposedsecretsreports", "rbachassessments", "clusterrbachassessments"]
+  resources: ["vulnerabilityreports", "clustervulnerabilityreports", "configauditreports", "clusterconfigauditreports", "exposedsecretreports", "clusterexposedsecretreports", "rbacassessmentreports", "clusterrbacassessmentreports"]
   verbs: ["get", "list", "watch"]
 {{- with .Values.rbac.additionalRules }}
 {{- toYaml . | nindent 0 }}

@@ -1,0 +1,130 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: observationfilters.zen.kube-zen.io
+spec:
+  group: zen.kube-zen.io
+  names:
+    kind: ObservationFilter
+    listKind: ObservationFilterList
+    plural: observationfilters
+    singular: observationfilter
+    shortNames:
+      - obsfilter
+      - ofilter
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              required: ["targetSource"]
+              properties:
+                targetSource:
+                  type: string
+                  description: "The source name this filter applies to (e.g., trivy, falco, kyverno, audit)"
+                  pattern: "^[a-z0-9-]+$"
+                  enum:
+                    - trivy
+                    - falco
+                    - kyverno
+                    - audit
+                    - kubebench
+                    - checkov
+                minSeverity:
+                  type: string
+                  description: "Minimum severity level to allow (CRITICAL > HIGH > MEDIUM > LOW > UNKNOWN)"
+                  enum:
+                    - CRITICAL
+                    - HIGH
+                    - MEDIUM
+                    - LOW
+                    - UNKNOWN
+                includeSeverity:
+                  type: array
+                  description: "List of severity levels to include (if set, only these are allowed)"
+                  items:
+                    type: string
+                    enum:
+                      - CRITICAL
+                      - HIGH
+                      - MEDIUM
+                      - LOW
+                      - UNKNOWN
+                excludeEventTypes:
+                  type: array
+                  description: "List of event types to exclude"
+                  items:
+                    type: string
+                includeEventTypes:
+                  type: array
+                  description: "List of event types to include (if set, only these are allowed)"
+                  items:
+                    type: string
+                excludeNamespaces:
+                  type: array
+                  description: "List of namespaces to exclude"
+                  items:
+                    type: string
+                includeNamespaces:
+                  type: array
+                  description: "List of namespaces to include (if set, only these are allowed)"
+                  items:
+                    type: string
+                excludeKinds:
+                  type: array
+                  description: "List of resource kinds to exclude (e.g., Pod, Deployment)"
+                  items:
+                    type: string
+                includeKinds:
+                  type: array
+                  description: "List of resource kinds to include (if set, only these are allowed)"
+                  items:
+                    type: string
+                excludeCategories:
+                  type: array
+                  description: "List of categories to exclude"
+                  items:
+                    type: string
+                includeCategories:
+                  type: array
+                  description: "List of categories to include (if set, only these are allowed)"
+                  items:
+                    type: string
+                excludeRules:
+                  type: array
+                  description: "List of rule names to exclude (e.g., disallow-latest-tag)"
+                  items:
+                    type: string
+                ignoreKinds:
+                  type: array
+                  description: "Alias for excludeKinds (convenience for kubernetesEvents source)"
+                  items:
+                    type: string
+                enabled:
+                  type: boolean
+                  description: "Controls whether this source is enabled (default: true)"
+      subresources:
+        status: {}
+      additionalPrinterColumns:
+        - name: Source
+          type: string
+          description: Target source for this filter
+          jsonPath: .spec.targetSource
+        - name: Enabled
+          type: boolean
+          description: Whether the source is enabled
+          jsonPath: .spec.enabled
+        - name: Min Severity
+          type: string
+          description: Minimum severity threshold
+          jsonPath: .spec.minSeverity
+        - name: Age
+          type: date
+          jsonPath: .metadata.creationTimestamp
+

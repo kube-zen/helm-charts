@@ -1,0 +1,6 @@
+# Artifact Hub repository metadata file
+repositoryID: kube-zen-zen-watcher
+owners:
+  - name: Kube-ZEN Team
+    email: maintainers@kube-zen.io
+

@@ -1,0 +1,29 @@
+{{- if .Values.mockData.enabled }}
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ include "zen-watcher.fullname" . }}-audit-policy
+  labels:
+    {{- include "zen-watcher.labels" . | nindent 4 }}
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: check-resource-limits
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      message: "Resource limits should be set for better resource management"
+      pattern:
+        spec:
+          containers:
+          - resources:
+              limits:
+                memory: "?*"
+                cpu: "?*"
+{{- end }}
+

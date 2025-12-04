@@ -14,7 +14,7 @@ global:
 image:
   repository: kubezen/zen-watcher
   pullPolicy: Always
-  tag: "1.0.23"
+  tag: "1.0.19"
   
   # Image signature verification (Cosign)
   # Set to true to verify image signatures
@@ -193,7 +193,7 @@ serviceMonitor:
 
 ## VMServiceScrape (VictoriaMetrics Operator)
 vmServiceScrape:
-  enabled: false
+  enabled: true
   interval: 30s
   scrapeTimeout: 10s
   path: /metrics
@@ -272,5 +272,18 @@ commonLabels: {}
 
 ## Common Annotations
 commonAnnotations: {}
+
+## Mock Data for Testing/Demo
+mockData:
+  # Enable mock data generation (ConfigMaps for checkov/kube-bench, mock Observations for falco/audit)
+  # Enable this for demos to show all 6 observation sources
+  enabled: true
+
+## Namespace Configuration for Event Sources
+namespaces:
+  # Namespace where Checkov results are stored
+  checkov: "checkov"
+  # Namespace where kube-bench results are stored
+  kubeBench: "kube-bench"
 
 

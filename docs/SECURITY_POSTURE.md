@@ -237,8 +237,29 @@ tls:
 
 ---
 
+## Environment Profile Mapping
+
+**See:** [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) for platform-wide profiles
+
+| Profile | Security Posture | Gaps Allowed |
+|---------|------------------|--------------|
+| **Sandbox (Local MVP)** | Relaxed | tlsInsecure=true, auto-gen secrets, broad RBAC |
+| **Demo (GitOps/AWS)** | Moderate | NetworkPolicy optional, RBAC scoping TODO |
+| **Pilot (AWS)** | Production-Lite | NetworkPolicy required (RM-HELM-001), RBAC scoping TODO |
+| **Prod-Like (AWS)** | Production | No gaps allowed, all RM-HELM-001 items must be resolved |
+
+**Validation:**
+- Sandbox: No security validation required
+- Demo: Basic security checks (TLS enabled, external secrets)
+- Pilot: All security checks (NetworkPolicy, RBAC scoping, PDB)
+- Prod-Like: Full security audit (SOC2 controls, compliance)
+
+---
+
 ## See Also
 
+- [PROFILES_AND_VALUES.md](PROFILES_AND_VALUES.md) - Profile selection guide
+- [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) - Platform profiles
 - [TLS_HARDENING.md](../charts/zen-agent/TLS_HARDENING.md) - Agent TLS details
 - [Agent Cert Lifecycle](../../../zen-alpha/docs/09-security/AGENT_CERT_LIFECYCLE.md) - Certificate management
 - [HMAC Enforcement](../../../zen-alpha/docs/09-security/HMAC_ENFORCEMENT_CONFIG.md) - HMAC configuration

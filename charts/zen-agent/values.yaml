@@ -21,6 +21,11 @@ resources:
     cpu: 100m
     memory: 128Mi
 
+# Metrics configuration (Phase Q)
+metrics:
+  enabled: true  # Enable Prometheus metrics endpoint
+  port: 9090     # Port for /metrics endpoint
+
 serviceAccount:
   create: true
   name: zen-agent

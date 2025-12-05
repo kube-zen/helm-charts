@@ -9,6 +9,34 @@ This document extracts helm/infrastructure roadmap items from the platform roadm
 
 ---
 
+## Example Values Files
+
+**Location:** `docs/examples/`
+
+- **values-local.yaml** - Local k3d development (TLS disabled, minimal resources)
+- **values-gitops.yaml** - GitOps-driven deployment (FluxCD/ArgoCD, mTLS enabled)
+- **values-aws.yaml** - AWS EKS deployment (public certs, IRSA support)
+
+**Usage:**
+```bash
+# Local dev
+helm install zen-agent charts/zen-agent/ -f docs/examples/values-local.yaml \
+  --set saas.clusterToken=YOUR_TOKEN \
+  --set tenant.id=TENANT_ID \
+  --set cluster.id=CLUSTER_ID
+
+# GitOps (via FluxCD/ArgoCD)
+# Reference values-gitops.yaml in your GitOps repo
+
+# AWS EKS
+helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml \
+  --set saas.clusterToken=YOUR_TOKEN \
+  --set tenant.id=TENANT_ID \
+  --set cluster.id=CLUSTER_ID
+```
+
+---
+
 ## Environment Profiles
 
 ### Local MVP (k3d)
@@ -30,6 +58,8 @@ This document extracts helm/infrastructure roadmap items from the platform roadm
 **Scripts:**
 - `zen-alpha/scripts/demo/run-local-real-pipeline.sh`
 - `helm-charts/scripts/demo/helm-smoke-k3d.sh`
+
+**Example Values:** `docs/examples/values-local.yaml`
 
 ### GitOps-Driven Demo
 
@@ -55,6 +85,8 @@ This document extracts helm/infrastructure roadmap items from the platform roadm
 
 **Status:** Design complete (not yet wired to /clusters/new)
 
+**Example Values:** `docs/examples/values-gitops.yaml`
+
 ### AWS/Open Demo
 
 **Purpose:** Public demo on AWS EKS for partners/customers
@@ -77,6 +109,8 @@ This document extracts helm/infrastructure roadmap items from the platform roadm
 - Public certificate trust chain
 
 **Status:** Planned (orchestration by MAIN AI)
+
+**Example Values:** `docs/examples/values-aws.yaml`
 
 ---
 

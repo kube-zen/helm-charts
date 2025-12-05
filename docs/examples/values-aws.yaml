@@ -1,0 +1,76 @@
+# Example values for AWS EKS deployment
+# Usage: helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml
+# See: docs/ROADMAP_HELM.md for AWS/open demo details
+
+image:
+  repository: kubezen/zen-agent
+  tag: "1.0.2"  # Pin to specific version
+  pullPolicy: IfNotPresent
+
+saas:
+  endpoint: "https://agent.kube-zen.io"  # Public SaaS FQDN (HTTPS only, no .svc.cluster.local)
+  clusterToken: ""  # Set via AWS Secrets Manager or IRSA (RM-AGENT-004)
+
+tenant:
+  id: ""  # Set via ConfigMap or Secret
+
+cluster:
+  id: ""  # Set via ConfigMap or Secret
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# AWS: TLS enabled with public certificates
+tlsInsecure: false  # Production: TLS required
+environment: "prod"
+
+# Mount CA cert if using custom CA (e.g., internal CA)
+# caMount:
+#   enabled: true
+#   configMapName: zen-agent-ca
+#   mountPath: /usr/local/share/ca-certificates
+
+metrics:
+  enabled: true
+  port: 9090
+
+# Production RBAC (scoped, EKS-compatible)
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: zen-agent
+  # AWS IRSA annotation (if using AWS Secrets Manager)
+  # annotations:
+  #   eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT:role/zen-agent-role
+
+# AWS-specific: Network policies required (RM-HELM-001)
+# Note: NetworkPolicy template not yet in chart (planned)
+# networkPolicy:
+#   enabled: true
+#   egress:
+#     - to:  # SaaS endpoint
+#       - namespaceSelector: {}
+#       ports:
+#         - protocol: TCP
+#           port: 443
+
+# Pod Security: Restricted profile (required for EKS)
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  readOnlyRootFilesystem: true
+

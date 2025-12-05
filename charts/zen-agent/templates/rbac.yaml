@@ -1,0 +1,65 @@
+{{- if .Values.rbac.create -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "zen-agent.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "zen-agent.labels" . | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "zen-agent.fullname" . }}
+  labels:
+    {{- include "zen-agent.labels" . | nindent 4 }}
+rules:
+  # Observation CRD access (for sink mode)
+  - apiGroups: ["zen.kube-zen.com"]
+    resources: ["observations"]
+    verbs: ["get", "list", "watch"]
+  
+  # ZenAgentRemediation CRD access (for executor mode)
+  - apiGroups: ["zen.kube-zen.com"]
+    resources: ["zenagentremediations"]
+    verbs: ["get", "list", "watch", "update", "patch"]
+  - apiGroups: ["zen.kube-zen.com"]
+    resources: ["zenagentremediations/status"]
+    verbs: ["update", "patch"]
+  
+  # Deployment access (for restart/scale operations with SSA)
+  - apiGroups: ["apps"]
+    resources: ["deployments"]
+    verbs: ["get", "list", "patch"]  # SSA uses patch with fieldManager
+  
+  # Pod access (for validation checks)
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+  
+  # ReplicaSet access (for deployment health checks)
+  - apiGroups: ["apps"]
+    resources: ["replicasets"]
+    verbs: ["get", "list"]
+  
+  # Events (read-only for observability)
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "zen-agent.fullname" . }}
+  labels:
+    {{- include "zen-agent.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "zen-agent.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "zen-agent.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}
+

@@ -239,7 +239,8 @@ tls:
 
 ## Security Incident Flow Alignment
 
-**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for complete incident flow  
+**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for current implementation  
+**See:** [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md) for target production architecture  
 **See:** [SECURITY_INCIDENT_EXPERT_REVIEW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_EXPERT_REVIEW.md) for expert review questions
 
 ### Helm Configuration Impact on Incident Flow
@@ -277,12 +278,14 @@ tls:
 
 **See:** [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) for platform-wide profiles
 
-| Profile | Security Posture | Gaps Allowed | Incident Flow Support |
-|---------|------------------|--------------|----------------------|
-| **Sandbox (Local MVP)** | Relaxed | tlsInsecure=true, auto-gen secrets, broad RBAC | SSA only, basic validation |
-| **Demo (GitOps/AWS)** | Moderate | NetworkPolicy optional, RBAC scoping TODO | SSA + GitOps, HTTP/K8s probes |
-| **Pilot (AWS)** | Production-Lite | NetworkPolicy required (RM-HELM-001), RBAC scoping TODO | All modes, metrics probes, rollback |
-| **Prod-Like (AWS)** | Production | No gaps allowed, all RM-HELM-001 items must be resolved | All modes, continuous validation, compliance |
+| Profile | Security Posture | Gaps Allowed | Incident Flow Support (Current) | Target Production Flow |
+|---------|------------------|--------------|--------------------------------|----------------------|
+| **Sandbox (Local MVP)** | Relaxed | tlsInsecure=true, auto-gen secrets, broad RBAC | SSA immediate, basic validation | N/A (dev only) |
+| **Demo (GitOps/AWS)** | Moderate | NetworkPolicy optional, RBAC scoping TODO | SSA immediate + GitOps PR immediate, HTTP/K8s probes | N/A (demo only) |
+| **Pilot (AWS)** | Production-Lite | NetworkPolicy required (RM-HELM-001), RBAC scoping TODO | All modes (except scheduled GitOps), metrics probes, rollback | Scheduled SSA ✅, Scheduled GitOps 🔮 |
+| **Prod-Like (AWS)** | Production | No gaps allowed, all RM-HELM-001 items must be resolved | All modes (except scheduled GitOps), continuous validation, compliance | All target modes ✅, HA ✅, multi-region 🔮 |
+
+**Note:** Scheduled GitOps PR (delayed PR creation) is target behavior, not current. Current GitOps creates PRs immediately.
 
 **Validation:**
 - **Sandbox:** No security validation required, basic smoke tests

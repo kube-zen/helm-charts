@@ -218,21 +218,47 @@ helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml \
 
 ## Security Incident Flow Support
 
-**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for complete incident flow  
+**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for current implementation  
+**See:** [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md) for target production architecture  
 **See:** [SECURITY_INCIDENT_EXPERT_REVIEW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_EXPERT_REVIEW.md) for expert review
 
-### Profile → Incident Flow Mapping
+### Profile → Incident Flow Mapping (Current)
 
 | Helm Profile | Execution Modes | Approval Modes | Validation | Rollback | Status |
 |--------------|----------------|----------------|------------|----------|--------|
-| **Local MVP** | SSA only | UI immediate | Basic probes | Automatic | ✅ CURRENT |
-| **GitOps-Driven** | SSA + GitOps PR | UI + Slack | HTTP + K8s + metrics | Automatic + Git revert | ✅ CURRENT |
-| **AWS/Open Demo** | All modes | All modes | All probe types | Automatic + manual | ✅ CURRENT |
+| **Local MVP** | SSA immediate | UI immediate | Basic probes | Automatic | ✅ CURRENT |
+| **GitOps-Driven** | SSA immediate + scheduled, GitOps PR immediate | UI + Slack | HTTP + K8s + metrics | Automatic + Git revert | ✅ CURRENT |
+| **AWS/Open Demo** | SSA immediate + scheduled, GitOps PR immediate | UI + Slack + scheduled | All probe types | Automatic + manual | ✅ CURRENT |
+
+**Current Implementation Notes:**
+- **Scheduled SSA:** ✅ CURRENT (CRD-based in-cluster scheduler)
+- **Scheduled GitOps PR:** 🔮 FUTURE (delayed PR creation not implemented)
+- **GitOps PR:** ✅ CURRENT (immediate PR creation only)
 
 **Expected Behaviors per Profile:**
 - **Local MVP:** Fast iteration, minimal security (dev only)
-- **GitOps-Driven:** Audit trail via Git, async approval workflows
-- **AWS/Open Demo:** Production-like, all security features enabled
+- **GitOps-Driven:** Audit trail via Git, async approval workflows (PRs created immediately)
+- **AWS/Open Demo:** Production-like, all security features enabled (except scheduled GitOps)
+
+### Helm Security Incident Support Status
+
+**Current Implementation (✅ DONE):**
+1. **SSA Immediate Execution:** Agent executes immediate remediations via Server-Side Apply
+2. **SSA Scheduled Execution:** Agent creates CRD with schedule, in-cluster scheduler executes at scheduled time
+3. **GitOps PR Immediate:** zen-gitops creates PR immediately, FluxCD/ArgoCD syncs to cluster
+4. **mTLS Optional:** Agent supports mTLS to SaaS (production-ready, not required)
+5. **Pod Security:** Restricted profile enforced (non-root, read-only rootfs, dropped capabilities)
+
+**Target Production (🔮 FUTURE):**
+1. **GitOps PR Scheduled:** zen-gitops creates PR at scheduled time (delayed PR creation) - Target design in [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md)
+2. **Agent HA:** Formal leader election for multi-replica agents (RM-AGENT-002)
+3. **NetworkPolicy:** Agent egress policies enforced (RM-HELM-001)
+4. **RBAC Scoping:** Agent permissions scoped to specific resources/namespaces (RM-HELM-001)
+5. **mTLS Required:** mTLS mandatory for production (RM-SEC-001)
+
+**Note:** Scheduled GitOps PR is described in target production doc but not implemented. Current behavior: GitOps creates PRs immediately regardless of schedule.
+
+---
 
 ### Helm-Level Assumptions (Affects Incident Handling)
 

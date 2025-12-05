@@ -1,0 +1,48 @@
+# Example values for local k3d development
+# Usage: helm install zen-agent charts/zen-agent/ -f docs/examples/values-local.yaml
+
+image:
+  repository: kubezen/zen-agent
+  tag: bootstrap  # Use local image or import via k3d
+  pullPolicy: IfNotPresent
+
+saas:
+  endpoint: "http://localhost:8080"  # Local SaaS (k3d ingress or port-forward)
+  clusterToken: "YOUR_BOOTSTRAP_TOKEN"  # REQUIRED: Replace with actual token
+
+tenant:
+  id: "LOCAL_TENANT"  # REQUIRED: Replace with tenant ID
+
+cluster:
+  id: "local-k3d-cluster"  # REQUIRED: Replace with cluster ID
+
+resources:
+  limits:
+    cpu: 256m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Local dev: TLS disabled or self-signed
+tlsInsecure: true  # DEV ONLY - allows self-signed certs
+environment: "dev"  # Required to allow tlsInsecure
+
+# Optional: Mount custom CA for mkcert
+# caMount:
+#   enabled: true
+#   configMapName: zen-agent-ca
+#   mountPath: /usr/local/share/ca-certificates
+
+metrics:
+  enabled: true
+  port: 9090
+
+# Minimal RBAC for local dev
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: zen-agent
+

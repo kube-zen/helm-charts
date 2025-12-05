@@ -166,18 +166,47 @@ tls:
 ### High Priority (RM-HELM-001)
 
 - **zen-agent NetworkPolicy:** Not yet defined
+  - **Status:** TODO
+  - **Roadmap:** RM-HELM-001 (Agent chart TLS hardening)
+  - **Impact:** Network isolation incomplete for production
+  - **Example:** See `docs/examples/values-aws.yaml` for planned NetworkPolicy config
+
 - **zen-agent RBAC scoping:** Too broad for production
+  - **Status:** TODO
+  - **Roadmap:** RM-HELM-001
+  - **Impact:** Over-permissive ClusterRole (get/list/watch all resources)
+  - **Required:** Scope to specific namespaces/resources per tenant
+
 - **PodDisruptionBudget:** Missing (HA consideration)
+  - **Status:** TODO
+  - **Roadmap:** Not explicitly tracked (infrastructure hardening)
+  - **Impact:** No protection against voluntary disruptions
+  - **Required:** PDB for multi-replica deployments
 
 ### Medium Priority
 
 - **zen-watcher PodSecurity:** Match zen-agent hardening
+  - **Status:** Partial (restricted profile planned)
+  - **Roadmap:** RM-HELM-002 (Watcher CRD sync automation)
+  - **Impact:** Inconsistent security posture between agent/watcher
+  - **Required:** Apply same PodSecurity standards as zen-agent
+
 - **Service mesh integration:** Istio/Linkerd compatibility (future)
+  - **Status:** Not planned
+  - **Roadmap:** Future enhancement
+  - **Impact:** No service mesh integration yet
 
 ### Low Priority
 
 - **OPA policy validation:** Before applying remediations (future)
+  - **Status:** Not planned
+  - **Roadmap:** RM-AGENT-020 (Future ideas)
+  - **Impact:** No policy validation before SSA apply
+
 - **Image scanning:** Trivy/Snyk in CI (future)
+  - **Status:** Not planned
+  - **Roadmap:** Not explicitly tracked
+  - **Impact:** No automated vulnerability scanning in CI
 
 ---
 

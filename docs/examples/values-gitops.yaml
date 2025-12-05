@@ -1,0 +1,54 @@
+# Example values for GitOps-driven deployment (FluxCD/ArgoCD)
+# Usage: helm install zen-agent charts/zen-agent/ -f docs/examples/values-gitops.yaml
+# See: docs/ROADMAP_HELM.md for GitOps integration details
+
+image:
+  repository: kubezen/zen-agent
+  tag: "1.0.2"  # Pin to specific version for GitOps
+  pullPolicy: IfNotPresent
+
+saas:
+  endpoint: "https://agent.kube-zen.io"  # Production SaaS FQDN (HTTPS only)
+  clusterToken: ""  # Set via Secret (external-secrets or sealed-secrets)
+
+tenant:
+  id: ""  # Set via Secret or ConfigMap
+
+cluster:
+  id: ""  # Set via Secret or ConfigMap
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# GitOps: TLS enabled (mTLS)
+tlsInsecure: false  # Production: TLS required
+environment: "prod"  # or "staging"
+
+# Mount CA cert if using custom CA
+# caMount:
+#   enabled: true
+#   configMapName: zen-agent-ca
+#   mountPath: /usr/local/share/ca-certificates
+
+metrics:
+  enabled: true
+  port: 9090
+
+# Production RBAC (scoped)
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name: zen-agent
+
+# GitOps-specific: Enable network policies (RM-HELM-001)
+# Note: NetworkPolicy template not yet in chart (planned)
+# networkPolicy:
+#   enabled: true
+

@@ -211,7 +211,7 @@ tls:
 ## See Also
 
 - [TLS_HARDENING.md](../charts/zen-agent/TLS_HARDENING.md) - Agent TLS details
-- [Agent Cert Lifecycle](../../../zen-alpha/docs/04-security/AGENT_CERT_LIFECYCLE.md) - Certificate management
-- [HMAC Enforcement](../../../zen-alpha/docs/04-security/HMAC_ENFORCEMENT_CONFIG.md) - HMAC configuration
+- [Agent Cert Lifecycle](../../../zen-alpha/docs/09-security/AGENT_CERT_LIFECYCLE.md) - Certificate management
+- [HMAC Enforcement](../../../zen-alpha/docs/09-security/HMAC_ENFORCEMENT_CONFIG.md) - HMAC configuration
 - [ROADMAP_HELM.md](ROADMAP_HELM.md) - Helm roadmap
 

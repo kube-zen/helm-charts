@@ -218,20 +218,52 @@ helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml \
 
 ## Security Incident Flow Support
 
-**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for complete incident flow
+**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for complete incident flow  
+**See:** [SECURITY_INCIDENT_EXPERT_REVIEW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_EXPERT_REVIEW.md) for expert review
 
 ### Profile → Incident Flow Mapping
 
-| Helm Profile | Execution Modes | Approval Modes | Validation | Rollback |
-|--------------|----------------|----------------|------------|----------|
-| **Local MVP** | SSA only | UI immediate | Basic probes | Automatic |
-| **GitOps-Driven** | SSA + GitOps PR | UI + Slack | HTTP + K8s + metrics | Automatic + Git revert |
-| **AWS/Open Demo** | All modes | All modes | All probe types | Automatic + manual |
+| Helm Profile | Execution Modes | Approval Modes | Validation | Rollback | Status |
+|--------------|----------------|----------------|------------|----------|--------|
+| **Local MVP** | SSA only | UI immediate | Basic probes | Automatic | ✅ CURRENT |
+| **GitOps-Driven** | SSA + GitOps PR | UI + Slack | HTTP + K8s + metrics | Automatic + Git revert | ✅ CURRENT |
+| **AWS/Open Demo** | All modes | All modes | All probe types | Automatic + manual | ✅ CURRENT |
 
 **Expected Behaviors per Profile:**
 - **Local MVP:** Fast iteration, minimal security (dev only)
 - **GitOps-Driven:** Audit trail via Git, async approval workflows
 - **AWS/Open Demo:** Production-like, all security features enabled
+
+### Helm-Level Assumptions (Affects Incident Handling)
+
+1. **ServiceAccount & RBAC (✅ DONE):**
+   - **Assumption:** Agent has `get/list/watch` on all resources (observation)
+   - **Assumption:** Agent has `create/update/patch/delete` on ZenAgentRemediation CRDs
+   - **Impact:** Broad permissions required for incident detection and execution
+   - **Roadmap:** RM-HELM-001 (scope RBAC for production)
+
+2. **NetworkPolicy (⚠️  TODO - RM-HELM-001):**
+   - **Assumption:** Agent can egress to SaaS API (HTTPS)
+   - **Assumption:** Agent can egress to K8s API server
+   - **Impact:** Without NetworkPolicy, agent has unrestricted egress
+   - **Roadmap:** RM-HELM-001 (add NetworkPolicy template)
+
+3. **Pod Security (✅ DONE):**
+   - **Assumption:** Agent runs as non-root, read-only root filesystem
+   - **Assumption:** All capabilities dropped
+   - **Impact:** Restricted profile enforced, compliant with PSS
+
+4. **Secrets Management (⚠️  PARTIAL):**
+   - **Assumption:** Bootstrap token stored in K8s Secret
+   - **Assumption:** HMAC key derived via HKDF (not stored)
+   - **Impact:** Bootstrap token is sensitive, needs external secret management
+   - **Roadmap:** RM-AGENT-004 (external secret providers)
+
+5. **Metrics & Observability (✅ DONE):**
+   - **Assumption:** Prometheus scrapes /metrics endpoint
+   - **Assumption:** Metrics used for watchdog validation
+   - **Impact:** Metrics-based probes require Prometheus in cluster
+   - **Default:** `metrics.enabled: true` (recommended for all profiles)
 
 ---
 

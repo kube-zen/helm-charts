@@ -7,6 +7,33 @@
 
 ---
 
+## Current Guarantees vs Known Gaps
+
+### What IS Enforced Now
+
+- ✅ Pod runs as non-root (UID 1000)
+- ✅ Read-only root filesystem
+- ✅ All capabilities dropped
+- ✅ No privilege escalation
+- ✅ HMAC authentication to SaaS
+- ✅ mTLS optional (production-ready)
+- ✅ zen-watcher NetworkPolicy enforced (if enabled)
+
+### Known Gaps
+
+- ⚠️  zen-agent NetworkPolicy missing (RM-HELM-001)
+- ⚠️  zen-agent RBAC too broad for production
+- ⚠️  No PodDisruptionBudget (HA consideration)
+- ⚠️  zen-watcher PodSecurity needs hardening
+
+### Assumptions (Relies on Cluster Policies)
+
+- Cluster-level network policies (if NetworkPolicy CRD not installed)
+- PSP or Pod Security Admission (if chart PSS not enforced)
+- Image pull policies (cluster registry authentication)
+
+---
+
 ## zen-agent Security Baseline
 
 ### Pod Security

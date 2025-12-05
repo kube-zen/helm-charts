@@ -237,10 +237,45 @@ tls:
 
 ---
 
+## Security Incident Flow Alignment
+
+**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for complete incident flow  
+**See:** [SECURITY_INCIDENT_EXPERT_REVIEW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_EXPERT_REVIEW.md) for expert review questions
+
+### Helm Configuration Impact on Incident Flow
+
+**Chart Settings That Affect Security Incident Handling:**
+
+| Chart Setting | Incident Flow Impact | Profiles |
+|---------------|---------------------|----------|
+| `tlsInsecure: true` | **Detection:** Allows self-signed certs, reduces TLS validation | Sandbox only (dev) |
+| `tlsInsecure: false` | **Detection:** Full TLS validation, production-ready | Demo, Pilot, Prod-Like |
+| `caMount.enabled: true` | **Detection:** Custom CA trust, private PKI support | All (optional) |
+| `rbac.create: true` | **Execution:** Agent can execute remediations, read cluster state | All (required) |
+| `serviceAccount.create: true` | **Execution:** Agent identity for K8s API | All (required) |
+| `metrics.enabled: true` | **Observability:** Prometheus metrics, watchdog metrics probes | All (recommended) |
+| `resources.limits` | **Execution:** Resource constraints, OOM protection | All (tune per profile) |
+
+### Execution Mode Support by Profile
+
+| Profile | SSA Direct | GitOps PR | Validation Strategy | Rollback |
+|---------|------------|-----------|---------------------|----------|
+| **Sandbox (Local MVP)** | ✅ Supported | ⚠️  Optional | Basic probes (HTTP/K8s) | Automatic |
+| **Demo (GitOps/AWS)** | ✅ Supported | ✅ Supported | All probes (HTTP/K8s/metrics) | Automatic + Git revert |
+| **Pilot (AWS)** | ✅ Supported | ✅ Supported | All probes + continuous | Automatic + manual |
+| **Prod-Like (AWS)** | ✅ Supported | ✅ Supported | All probes + continuous + SLO | Automatic + manual |
+
+**Helm Settings for Each Profile:**
+- **Sandbox:** `tlsInsecure: true`, `environment: dev`, minimal resources
+- **Demo:** `tlsInsecure: false`, external secrets, medium resources
+- **Pilot:** `tlsInsecure: false`, customer CA, production resources, NetworkPolicy (RM-HELM-001)
+- **Prod-Like:** Identical to Pilot, all security features enabled, compliance validated
+
+---
+
 ## Environment Profile Mapping
 
-**See:** [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) for platform-wide profiles  
-**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for how profiles affect incident handling
+**See:** [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) for platform-wide profiles
 
 | Profile | Security Posture | Gaps Allowed | Incident Flow Support |
 |---------|------------------|--------------|----------------------|

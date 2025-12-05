@@ -4,7 +4,8 @@
 **Purpose:** Guide to choosing the right Helm values for your deployment environment
 
 **See Also:**
-- [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) - Platform-wide environment profiles
+- [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) - Platform-wide environment profiles ⭐ **Start Here**
+- [OPS_PORTAL.md](../../../zen-alpha/docs/OPS_PORTAL.md) - Operations hub by profile
 - [ROADMAP_HELM.md](ROADMAP_HELM.md) - Helm roadmap and features
 - [SECURITY_POSTURE.md](SECURITY_POSTURE.md) - Security baseline and gaps
 
@@ -212,14 +213,20 @@ Start Here
 
 ### Environment Mapping
 
-| Platform Environment | Helm Profile |
-|---------------------|--------------|
-| sandbox (k3d-zen-saas) | Local MVP |
-| demo (k3d-ec2 or EKS) | GitOps-Driven or AWS |
-| pilot (customer cluster) | AWS or GitOps-Driven |
-| prod-like (staging) | AWS |
+| Platform Environment | Helm Profile | Example Values | Constraints |
+|---------------------|--------------|----------------|-------------|
+| **sandbox** (k3d-zen-saas) | Local MVP | values-local.yaml | tlsInsecure allowed, minimal resources |
+| **demo** (k3d-ec2 or EKS) | GitOps-Driven or AWS | values-gitops.yaml or values-aws.yaml | TLS required, external secrets |
+| **pilot** (customer cluster) | AWS or GitOps-Driven | values-aws.yaml (customize) | TLS required, production RBAC |
+| **prod-like** (staging) | AWS | values-aws.yaml (production settings) | Identical to production |
 
 **See:** [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) for platform-wide environment definitions.
+
+**Profile Constraints (from ENVIRONMENT_PROFILES.md):**
+- **Sandbox:** Local MVP only (no AWS-specific features)
+- **Demo:** GitOps-Driven or AWS (all golden paths must be GREEN)
+- **Pilot:** AWS or GitOps-Driven (production-like, limited blast radius)
+- **Prod-Like:** AWS only (production-identical, all paths GREEN)
 
 ---
 

@@ -63,6 +63,8 @@ helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml \
 
 **Profile Guide:** See [PROFILES_AND_VALUES.md](PROFILES_AND_VALUES.md) for choosing the right profile
 
+**Validation:** Run `RUN_HELM_PROFILES_SANITY=1 scripts/ci/helm-profiles-sanity-optional.sh` to validate all example values
+
 ### GitOps-Driven Demo
 
 **Purpose:** Demonstrate GitOps workflows with real Git repos

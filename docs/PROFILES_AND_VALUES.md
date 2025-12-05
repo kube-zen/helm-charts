@@ -20,7 +20,8 @@
 - [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) - Platform-wide environment profiles ⭐ **Start Here**
 - [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) - Current implementation
 - [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md) - Target production architecture
-- [SECURITY_INCIDENT_EXPERT_REVIEW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_EXPERT_REVIEW.md) - Expert review questions
+- [THREAT_MODEL_PRODUCTION.md](../../../zen-alpha/docs/09-security/THREAT_MODEL_PRODUCTION.md) - Threat model and attack scenarios
+- [SECURITY_COMPLIANCE_MAP.md](../../../zen-alpha/docs/09-security/SECURITY_COMPLIANCE_MAP.md) - Compliance controls
 - [OPS_PORTAL.md](../../../zen-alpha/docs/OPS_PORTAL.md) - Operations hub by profile
 - [ROADMAP_HELM.md](ROADMAP_HELM.md) - Helm roadmap and features
 - [SECURITY_POSTURE.md](SECURITY_POSTURE.md) - Security baseline and gaps

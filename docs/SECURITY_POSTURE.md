@@ -241,7 +241,8 @@ tls:
 
 **See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for current implementation  
 **See:** [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md) for target production architecture  
-**See:** [SECURITY_INCIDENT_EXPERT_REVIEW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_EXPERT_REVIEW.md) for expert review questions
+**See:** [THREAT_MODEL_PRODUCTION.md](../../../zen-alpha/docs/09-security/THREAT_MODEL_PRODUCTION.md) for threat scenarios  
+**See:** [SECURITY_COMPLIANCE_MAP.md](../../../zen-alpha/docs/09-security/SECURITY_COMPLIANCE_MAP.md) for compliance controls
 
 ### Helm Configuration Impact on Incident Flow
 

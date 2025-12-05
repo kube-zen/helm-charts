@@ -33,6 +33,20 @@ serviceAccount:
 rbac:
   create: true
 
+networkPolicy:
+  enabled: false  # Set to true for production
+  prometheus:
+    enabled: false
+    namespace: monitoring
+    port: 9090
+
+# Secrets management
+secrets:
+  # Use existing secret for cluster token (preferred for production)
+  existingSecret: ""
+  # Key in existingSecret that contains the cluster token
+  clusterTokenKey: "cluster-token"
+
 podSecurityContext:
   runAsNonRoot: true
   runAsUser: 1000

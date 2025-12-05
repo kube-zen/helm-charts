@@ -4,7 +4,9 @@
 **Parent Roadmap:** [zen-alpha/docs/ROADMAP.md](../../../zen-alpha/docs/ROADMAP.md)  
 **Charts:** zen-agent, zen-watcher  
 **Architecture Context:** [COMPREHENSIVE_ARCHITECTURE.md](../../../zen-alpha/docs/01-architecture/COMPREHENSIVE_ARCHITECTURE.md) (see "Helm Charts & Deployment" section for system integration)  
-**Security Incident Flow:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) - How charts support incident handling
+**Security Incident Flow:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) - How charts support incident handling (current)  
+**Production Target:** [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md) - Target production architecture  
+**Threat Model:** [THREAT_MODEL_PRODUCTION.md](../../../zen-alpha/docs/09-security/THREAT_MODEL_PRODUCTION.md) - Threat scenarios and mitigations
 
 This document extracts helm/infrastructure roadmap items from the platform roadmap.
 
@@ -244,19 +246,26 @@ helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml \
 
 **Current Implementation (✅ DONE):**
 1. **SSA Immediate Execution:** Agent executes immediate remediations via Server-Side Apply
-2. **SSA Scheduled Execution:** Agent creates CRD with schedule, in-cluster scheduler executes at scheduled time
+2. **SSA Scheduled Execution:** Agent creates CRD with schedule, in-cluster scheduler executes at scheduled time (resilient to SaaS outage)
 3. **GitOps PR Immediate:** zen-gitops creates PR immediately, FluxCD/ArgoCD syncs to cluster
 4. **mTLS Optional:** Agent supports mTLS to SaaS (production-ready, not required)
 5. **Pod Security:** Restricted profile enforced (non-root, read-only rootfs, dropped capabilities)
 
 **Target Production (🔮 FUTURE):**
-1. **GitOps PR Scheduled:** zen-gitops creates PR at scheduled time (delayed PR creation) - Target design in [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md)
-2. **Agent HA:** Formal leader election for multi-replica agents (RM-AGENT-002)
-3. **NetworkPolicy:** Agent egress policies enforced (RM-HELM-001)
-4. **RBAC Scoping:** Agent permissions scoped to specific resources/namespaces (RM-HELM-001)
-5. **mTLS Required:** mTLS mandatory for production (RM-SEC-001)
+1. **GitOps PR Scheduled:** zen-gitops creates PR at scheduled time (delayed PR creation) - 3 design options in [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md#scheduled-gitops-pr-target)
+2. **Agent HA:** Formal leader election for multi-replica agents (RM-AGENT-002) - Mitigates T1, T8 in [THREAT_MODEL_PRODUCTION.md](../../../zen-alpha/docs/09-security/THREAT_MODEL_PRODUCTION.md)
+3. **NetworkPolicy:** Agent egress policies enforced (RM-HELM-001) - Mitigates T1 (compromised agent)
+4. **RBAC Scoping:** Agent permissions scoped to specific resources/namespaces (RM-HELM-001) - Mitigates T1, T9
+5. **mTLS Required:** mTLS mandatory for production (RM-SEC-001) - Mitigates T3 (MITM attack)
+6. **External Secrets:** Vault/AWS Secrets Manager for bootstrap tokens (RM-AGENT-004) - Mitigates T2 (stolen tokens)
 
-**Note:** Scheduled GitOps PR is described in target production doc but not implemented. Current behavior: GitOps creates PRs immediately regardless of schedule.
+**Compliance Alignment:**
+- **SOC2 CC6.1:** RBAC scoping (RM-HELM-001)
+- **SOC2 CC6.7:** NetworkPolicy enforcement (RM-HELM-001)
+- **ISO A.8.5:** mTLS required (RM-SEC-001)
+- **ISO A.8.12:** NetworkPolicy for data leakage prevention (RM-HELM-001)
+
+**Note:** Scheduled GitOps PR is target behavior (3 design options documented). Current: GitOps creates PRs immediately.
 
 ---
 

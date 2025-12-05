@@ -21,6 +21,12 @@ This document extracts helm/infrastructure roadmap items from the platform roadm
 - SaaS endpoint: `http://localhost:port` or k3d ingress
 - Resources: minimal (limits: 256Mi RAM, 200m CPU)
 
+**Security Posture (from SECURITY_POSTURE.md):**
+- PodSecurity: ✅ Restricted profile
+- NetworkPolicy: ⚠️  Not enforced (low risk in k3d)
+- RBAC: ⚠️  Broad permissions (acceptable for dev)
+- mTLS: ❌ Disabled (dev only)
+
 **Scripts:**
 - `zen-alpha/scripts/demo/run-local-real-pipeline.sh`
 - `helm-charts/scripts/demo/helm-smoke-k3d.sh`
@@ -34,6 +40,12 @@ This document extracts helm/infrastructure roadmap items from the platform roadm
 - SaaS endpoint: demo cluster external FQDN
 - GitOps mode enabled
 - Resources: production-like
+
+**Security Posture:**
+- PodSecurity: ✅ Restricted profile
+- NetworkPolicy: ⚠️  Should be enforced (RM-HELM-001)
+- RBAC: ⚠️  Should be scoped (production requirement)
+- mTLS: ✅ Enabled
 
 **Flow:**
 1. zen-gitops creates PR in customer repo
@@ -52,6 +64,12 @@ This document extracts helm/infrastructure roadmap items from the platform roadm
 - SaaS endpoint: public FQDN (e.g., `https://agent.kube-zen.io`)
 - IRSA for AWS integration
 - Resources: production-ready
+
+**Security Posture:**
+- PodSecurity: ✅ Restricted profile (required for EKS)
+- NetworkPolicy: ✅ Must be enforced (public cloud requirement)
+- RBAC: ✅ Must be scoped (production best practice)
+- mTLS: ✅ Enabled with public certs
 
 **Requirements:**
 - EKS-compatible

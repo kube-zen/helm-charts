@@ -16,10 +16,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
+RUN_GUARDRAILS="${RUN_GUARDRAILS:-0}"
+
 cd "$REPO_ROOT"
 
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "Helm Charts Validation"
+if [ "$RUN_GUARDRAILS" = "1" ]; then
+    echo "(Guardrails: STRICT MODE)"
+fi
+echo "Testing profiles: default, SaaS-like, demo"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
@@ -130,9 +136,55 @@ for chart in "${CHARTS[@]}"; do
     echo ""
 done
 
+# Guardrail checks (if enabled)
+if [ "$RUN_GUARDRAILS" = "1" ]; then
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "Guardrail Checks"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    
+    GUARDRAIL_WARNINGS=0
+    
+    # Check for disallowed registries in values.yaml
+    echo "[1/2] Checking registry policies..."
+    for chart in "${CHARTS[@]}"; do
+        if [ -f "$chart/values.yaml" ]; then
+            if grep -q "repository:.*docker.io" "$chart/values.yaml" 2>/dev/null; then
+                echo "  ⚠️  $chart uses docker.io registry (should use kubezen/*)"
+                GUARDRAIL_WARNINGS=$((GUARDRAIL_WARNINGS + 1))
+            fi
+        fi
+    done
+    
+    if [ $GUARDRAIL_WARNINGS -eq 0 ]; then
+        echo "  ✅ All charts use approved registries"
+    fi
+    echo ""
+    
+    # Check for insecure pull policies
+    echo "[2/2] Checking image pull policies..."
+    for chart in "${CHARTS[@]}"; do
+        if [ -f "$chart/values.yaml" ]; then
+            if grep -q "pullPolicy:.*Always" "$chart/values.yaml" 2>/dev/null; then
+                echo "  ℹ️  $chart uses pullPolicy: Always (acceptable for dev)"
+            fi
+        fi
+    done
+    echo "  ✅ Pull policies checked"
+    echo ""
+    
+    if [ $GUARDRAIL_WARNINGS -gt 0 ]; then
+        echo "⚠️  $GUARDRAIL_WARNINGS guardrail warnings detected"
+        echo ""
+    fi
+fi
+
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 if [ $FAILED -eq 0 ]; then
     echo "✅ Helm Charts Validation → GREEN"
+    if [ "$RUN_GUARDRAILS" = "1" ] && [ ${GUARDRAIL_WARNINGS:-0} -gt 0 ]; then
+        echo "   (with $GUARDRAIL_WARNINGS guardrail warnings)"
+    fi
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     exit 0
 else

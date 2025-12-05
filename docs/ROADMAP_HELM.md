@@ -5,7 +5,7 @@
 **Charts:** zen-agent, zen-watcher  
 **Architecture Context:** [COMPREHENSIVE_ARCHITECTURE.md](../../../zen-alpha/docs/01-architecture/COMPREHENSIVE_ARCHITECTURE.md) (see "Helm Charts & Deployment" section for system integration)  
 **Security Incident Flow:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) - How charts support incident handling (current)  
-**Production Target:** [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md) - Target production architecture  
+**Production Architecture:** [SECURITY_INCIDENT_FLOW_PRODUCTION.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION.md) - Production architecture  
 **Threat Model:** [THREAT_MODEL_PRODUCTION.md](../../../zen-alpha/docs/09-security/THREAT_MODEL_PRODUCTION.md) - Threat scenarios and mitigations
 
 This document extracts helm/infrastructure roadmap items from the platform roadmap.
@@ -221,7 +221,7 @@ helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml \
 ## Security Incident Flow Support
 
 **See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for current implementation  
-**See:** [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md) for target production architecture  
+**See:** [SECURITY_INCIDENT_FLOW_PRODUCTION.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION.md) for production architecture  
 **See:** [SECURITY_INCIDENT_EXPERT_REVIEW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_EXPERT_REVIEW.md) for expert review
 
 ### Profile → Incident Flow Mapping (Current)
@@ -252,7 +252,7 @@ helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml \
 5. **Pod Security:** Restricted profile enforced (non-root, read-only rootfs, dropped capabilities)
 
 **Target Production (🔮 FUTURE):**
-1. **GitOps PR Scheduled:** zen-gitops creates PR at scheduled time (delayed PR creation) - 3 design options in [SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION_TARGET.md#scheduled-gitops-pr-target)
+1. **GitOps PR Scheduled:** zen-gitops creates PR at scheduled time (delayed PR creation) - Design described in [SECURITY_INCIDENT_FLOW_PRODUCTION.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION.md) (Phase 4D: Scheduled GitOps PR)
 2. **Agent HA:** Formal leader election for multi-replica agents (RM-AGENT-002) - Mitigates T1, T8 in [THREAT_MODEL_PRODUCTION.md](../../../zen-alpha/docs/09-security/THREAT_MODEL_PRODUCTION.md)
 3. **NetworkPolicy:** Agent egress policies enforced (RM-HELM-001) - Mitigates T1 (compromised agent)
 4. **RBAC Scoping:** Agent permissions scoped to specific resources/namespaces (RM-HELM-001) - Mitigates T1, T9

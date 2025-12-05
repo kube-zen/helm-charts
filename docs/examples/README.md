@@ -74,6 +74,7 @@ helm install zen-agent charts/zen-agent/ \
 
 ## See Also
 
+- [PROFILES_AND_VALUES.md](../PROFILES_AND_VALUES.md) - **Start Here** - Profile selection guide
 - [ROADMAP_HELM.md](../ROADMAP_HELM.md) - Helm roadmap and profiles
 - [SECURITY_POSTURE.md](../SECURITY_POSTURE.md) - Security baseline and gaps
 - [TLS_HARDENING.md](../../charts/zen-agent/TLS_HARDENING.md) - TLS configuration details

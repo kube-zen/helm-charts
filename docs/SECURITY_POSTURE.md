@@ -302,6 +302,44 @@ tls:
 
 ---
 
+## For Reviewers
+
+**If you are reviewing security incident flows**, read these documents in order:
+
+1. **[SECURITY_INCIDENT_FLOW_PRODUCTION.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION.md)** (20 min)
+   - Production architecture for incident handling
+   - How agent, watcher, SaaS, and GitOps interact
+   - Resilience scenarios (SaaS down, agent offline)
+
+2. **[THREAT_MODEL_PRODUCTION.md](../../../zen-alpha/docs/09-security/THREAT_MODEL_PRODUCTION.md)** (15 min)
+   - Threat model with 10 key threats
+   - Attack scenarios and mitigations
+   - How Helm configuration affects security posture
+
+3. **This Document (SECURITY_POSTURE.md)** (10 min)
+   - Helm-level security controls
+   - Current guarantees vs known gaps
+   - Environment profile mapping
+
+4. **[PROFILES_AND_VALUES.md](PROFILES_AND_VALUES.md)** (10 min)
+   - How to choose Helm values for different environments
+   - Security implications of each profile
+
+**Key Questions to Ask:**
+- Are agent RBAC permissions appropriate for production? (Currently broad ClusterRole)
+- Is NetworkPolicy absence a blocker for your environment? (Planned, not implemented)
+- Is mTLS optional acceptable, or should it be mandatory? (Currently optional, production-ready)
+- Are Pod Security Standards (restricted profile) sufficient? (Currently enforced)
+
+**Where Helm Configuration Affects Incident Flow:**
+- `tlsInsecure`: Controls TLS validation (detection phase, HMAC/mTLS authentication)
+- `rbac.create`: Controls agent permissions (execution phase, SSA operations)
+- `metrics.enabled`: Controls metrics emission (validation phase, watchdog metrics probes)
+- `caMount.enabled`: Controls CA trust chain (detection phase, mTLS certificate validation)
+- `serviceAccount.create`: Controls agent identity (execution phase, K8s API authentication)
+
+---
+
 ## See Also
 
 - [PROFILES_AND_VALUES.md](PROFILES_AND_VALUES.md) - Profile selection guide

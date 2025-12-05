@@ -16,6 +16,42 @@
 
 ---
 
+## For Reviewers
+
+**If you are reviewing how Helm values affect security incident flows:**
+
+**Start Here:**
+1. [SECURITY_INCIDENT_FLOW_PRODUCTION.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW_PRODUCTION.md) - Understand the complete incident flow
+2. This document (PROFILES_AND_VALUES.md) - See how Helm values map to flow requirements
+3. [SECURITY_POSTURE.md](SECURITY_POSTURE.md) - Understand security controls and gaps
+
+**Key Configuration Areas:**
+
+**Authentication & Authorization (Detection Phase):**
+- `tlsInsecure`: Dev only (sandbox), production requires `false`
+- `caMount.enabled`: Custom CA for private PKI environments
+- `saas.endpoint`: Must be HTTPS FQDN (no .svc.cluster.local, no IP literals)
+
+**Execution Permissions (Execution Phase):**
+- `rbac.create: true`: Required for agent to execute remediations
+- `serviceAccount.create: true`: Required for K8s API access
+- RBAC is currently broad ClusterRole (get/list/watch all resources) - production deployment should scope this
+
+**Observability (Validation Phase):**
+- `metrics.enabled: true`: Required for watchdog metrics probes
+- Prometheus must be available in cluster for metrics-based validation
+
+**Security Standards (All Phases):**
+- `podSecurityContext`: Non-root, read-only rootfs, dropped capabilities (always enforced)
+- `securityContext`: No privilege escalation (always enforced)
+
+**What This Means for Incident Flows:**
+- **Sandbox (Local MVP):** `tlsInsecure: true` enables fast dev iteration, but breaks production security model
+- **Demo (GitOps/AWS):** `tlsInsecure: false` + external secrets required for realistic demo
+- **Pilot/Production:** All security settings must be production-grade (mTLS, external secrets, NetworkPolicy planned)
+
+---
+
 **See Also:**
 - [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) - Platform-wide environment profiles ⭐ **Start Here**
 - [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) - Current implementation

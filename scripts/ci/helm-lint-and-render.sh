@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 #
+# Optional: Render all example values for validation
+# Usage: RUN_HELM_EXAMPLE_MATRIX=1 ./scripts/ci/helm-lint-and-render.sh
+#
 # Helm Lint and Render
 #
 # Purpose: Validate helm charts via lint and template rendering
@@ -135,6 +138,42 @@ for chart in "${CHARTS[@]}"; do
     fi
     echo ""
 done
+
+# Example values matrix (if enabled)
+if [ "$RUN_HELM_EXAMPLE_MATRIX" = "1" ]; then
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "Example Values Matrix Validation"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    
+    EXAMPLE_VALUES_DIR="$SCRIPT_DIR/../../docs/examples"
+    
+    if [ -d "$EXAMPLE_VALUES_DIR" ]; then
+        for example_file in "$EXAMPLE_VALUES_DIR"/values-*.yaml; do
+            if [ -f "$example_file" ]; then
+                example_name=$(basename "$example_file")
+                echo "Testing example: $example_name"
+                
+                # Test zen-agent chart with example values
+                if helm template test-release "$SCRIPT_DIR/../../charts/zen-agent" \
+                    -f "$example_file" \
+                    --set saas.clusterToken=test-token \
+                    --set tenant.id=test-tenant \
+                    --set cluster.id=test-cluster \
+                    > /dev/null 2>&1; then
+                    echo "  ✓ $example_name renders successfully"
+                else
+                    echo "  ❌ $example_name failed to render"
+                    FAILED=$((FAILED + 1))
+                fi
+            fi
+        done
+        echo ""
+    else
+        echo "⚠️  Example values directory not found: $EXAMPLE_VALUES_DIR"
+        echo ""
+    fi
+fi
 
 # Guardrail checks (if enabled)
 if [ "$RUN_GUARDRAILS" = "1" ]; then

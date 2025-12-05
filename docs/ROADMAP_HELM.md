@@ -61,6 +61,8 @@ helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml \
 
 **Example Values:** `docs/examples/values-local.yaml`
 
+**Profile Guide:** See [PROFILES_AND_VALUES.md](PROFILES_AND_VALUES.md) for choosing the right profile
+
 ### GitOps-Driven Demo
 
 **Purpose:** Demonstrate GitOps workflows with real Git repos

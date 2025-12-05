@@ -239,20 +239,27 @@ tls:
 
 ## Environment Profile Mapping
 
-**See:** [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) for platform-wide profiles
+**See:** [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) for platform-wide profiles  
+**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for how profiles affect incident handling
 
-| Profile | Security Posture | Gaps Allowed |
-|---------|------------------|--------------|
-| **Sandbox (Local MVP)** | Relaxed | tlsInsecure=true, auto-gen secrets, broad RBAC |
-| **Demo (GitOps/AWS)** | Moderate | NetworkPolicy optional, RBAC scoping TODO |
-| **Pilot (AWS)** | Production-Lite | NetworkPolicy required (RM-HELM-001), RBAC scoping TODO |
-| **Prod-Like (AWS)** | Production | No gaps allowed, all RM-HELM-001 items must be resolved |
+| Profile | Security Posture | Gaps Allowed | Incident Flow Support |
+|---------|------------------|--------------|----------------------|
+| **Sandbox (Local MVP)** | Relaxed | tlsInsecure=true, auto-gen secrets, broad RBAC | SSA only, basic validation |
+| **Demo (GitOps/AWS)** | Moderate | NetworkPolicy optional, RBAC scoping TODO | SSA + GitOps, HTTP/K8s probes |
+| **Pilot (AWS)** | Production-Lite | NetworkPolicy required (RM-HELM-001), RBAC scoping TODO | All modes, metrics probes, rollback |
+| **Prod-Like (AWS)** | Production | No gaps allowed, all RM-HELM-001 items must be resolved | All modes, continuous validation, compliance |
 
 **Validation:**
-- Sandbox: No security validation required
-- Demo: Basic security checks (TLS enabled, external secrets)
-- Pilot: All security checks (NetworkPolicy, RBAC scoping, PDB)
-- Prod-Like: Full security audit (SOC2 controls, compliance)
+- **Sandbox:** No security validation required, basic smoke tests
+- **Demo:** Basic security checks (TLS enabled, external secrets)
+- **Pilot:** All security checks (NetworkPolicy, RBAC scoping, PDB)
+- **Prod-Like:** Full security audit (SOC2 controls, compliance)
+
+**Security Incident Flow Support:**
+- **Sandbox:** Immediate SSA, basic watchdog, automatic rollback
+- **Demo:** Immediate/Scheduled SSA, GitOps PR, Slack approval, full watchdog
+- **Pilot:** All approval modes, all execution modes, continuous validation, audit trail
+- **Prod-Like:** Production-identical flow, all features tested, compliance validated
 
 ---
 

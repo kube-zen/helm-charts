@@ -3,7 +3,8 @@
 **Repository:** ~/letsgo/helm-charts  
 **Parent Roadmap:** [zen-alpha/docs/ROADMAP.md](../../../zen-alpha/docs/ROADMAP.md)  
 **Charts:** zen-agent, zen-watcher  
-**Architecture Context:** [COMPREHENSIVE_ARCHITECTURE.md](../../../zen-alpha/docs/01-architecture/COMPREHENSIVE_ARCHITECTURE.md) (see "Helm Charts & Deployment" section for system integration)
+**Architecture Context:** [COMPREHENSIVE_ARCHITECTURE.md](../../../zen-alpha/docs/01-architecture/COMPREHENSIVE_ARCHITECTURE.md) (see "Helm Charts & Deployment" section for system integration)  
+**Security Incident Flow:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) - How charts support incident handling
 
 This document extracts helm/infrastructure roadmap items from the platform roadmap.
 
@@ -212,6 +213,25 @@ helm install zen-agent charts/zen-agent/ -f docs/examples/values-aws.yaml \
 - `resources` - Resource limits/requests
 - `hpa.enabled` - Horizontal pod autoscaling
 - `networkPolicy.enabled` - Network policy enforcement
+
+---
+
+## Security Incident Flow Support
+
+**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for complete incident flow
+
+### Profile → Incident Flow Mapping
+
+| Helm Profile | Execution Modes | Approval Modes | Validation | Rollback |
+|--------------|----------------|----------------|------------|----------|
+| **Local MVP** | SSA only | UI immediate | Basic probes | Automatic |
+| **GitOps-Driven** | SSA + GitOps PR | UI + Slack | HTTP + K8s + metrics | Automatic + Git revert |
+| **AWS/Open Demo** | All modes | All modes | All probe types | Automatic + manual |
+
+**Expected Behaviors per Profile:**
+- **Local MVP:** Fast iteration, minimal security (dev only)
+- **GitOps-Driven:** Audit trail via Git, async approval workflows
+- **AWS/Open Demo:** Production-like, all security features enabled
 
 ---
 

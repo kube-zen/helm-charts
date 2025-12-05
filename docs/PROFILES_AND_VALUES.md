@@ -5,6 +5,7 @@
 
 **See Also:**
 - [ENVIRONMENT_PROFILES.md](../../../zen-alpha/docs/ENVIRONMENT_PROFILES.md) - Platform-wide environment profiles ⭐ **Start Here**
+- [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) - How security incidents flow end-to-end
 - [OPS_PORTAL.md](../../../zen-alpha/docs/OPS_PORTAL.md) - Operations hub by profile
 - [ROADMAP_HELM.md](ROADMAP_HELM.md) - Helm roadmap and features
 - [SECURITY_POSTURE.md](SECURITY_POSTURE.md) - Security baseline and gaps
@@ -13,12 +14,14 @@
 
 ## Quick Start: Which Profile Do I Need?
 
-| Your Situation | Profile | Example Values File |
-|----------------|---------|---------------------|
-| Local development (k3d) | **Local MVP** | [examples/values-local.yaml](examples/values-local.yaml) |
-| GitOps deployment (FluxCD/ArgoCD) | **GitOps-Driven** | [examples/values-gitops.yaml](examples/values-gitops.yaml) |
-| AWS EKS deployment | **AWS/Open Demo** | [examples/values-aws.yaml](examples/values-aws.yaml) |
-| Customer pilot deployment | **Production-Like** | Customize values-aws.yaml with production settings |
+| Your Situation | Profile | Example Values File | Security Incident Flow |
+|----------------|---------|---------------------|------------------------|
+| Local development (k3d) | **Local MVP** | [examples/values-local.yaml](examples/values-local.yaml) | SSA only, basic validation |
+| GitOps deployment (FluxCD/ArgoCD) | **GitOps-Driven** | [examples/values-gitops.yaml](examples/values-gitops.yaml) | SSA + GitOps PR, full validation |
+| AWS EKS deployment | **AWS/Open Demo** | [examples/values-aws.yaml](examples/values-aws.yaml) | All modes, production validation |
+| Customer pilot deployment | **Production-Like** | Customize values-aws.yaml with production settings | All modes, compliance required |
+
+**See:** [SECURITY_INCIDENT_FLOW.md](../../../zen-alpha/docs/01-architecture/SECURITY_INCIDENT_FLOW.md) for how each profile affects incident handling.
 
 ---
 

@@ -1,0 +1,23 @@
+# Helm chart packages (should be built, not committed)
+*.tgz
+*.tar.gz
+
+# Chart dependencies
+charts/*.tgz
+charts/**/*.tgz
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+

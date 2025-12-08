@@ -149,10 +149,10 @@ resources:
 
 ## Autoscaling
 autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 3
-  targetCPUUtilizationPercentage: 80
+  enabled: true    # Enabled for production readiness and community credibility
+  minReplicas: 2   # Enable HA with minimum 2 replicas
+  maxReplicas: 10  # Support high load scenarios
+  targetCPUUtilizationPercentage: 70  # More aggressive scaling for better responsiveness
   targetMemoryUtilizationPercentage: 80
 
 ## Probes

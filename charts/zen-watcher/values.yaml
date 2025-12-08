@@ -14,7 +14,7 @@ global:
 image:
   repository: kubezen/zen-watcher
   pullPolicy: Always
-  tag: "1.1.0"
+  tag: "1.0.0-alpha"
   
   # Image signature verification (Cosign)
   # Set to true to verify image signatures

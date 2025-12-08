@@ -14,8 +14,8 @@
 |---------------|-------------------------|------------|------------|-------|
 | 1.0.0         | 1.0.0                   | 1.26-1.29  | 1.23+      | Initial release |
 
-**Current Chart Version:** 1.0.0  
-**Current App Version:** 1.0.0 (Go 1.23+)
+**Current Chart Version:** 1.0.0-alpha  
+**Current App Version:** 1.0.0-alpha (Go 1.23+)
 
 ## Prerequisites
 

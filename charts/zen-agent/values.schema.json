@@ -7,17 +7,19 @@
       "properties": {
         "apiBase": {
           "type": "string",
-          "pattern": "^https://[^/]+$",
+          "pattern": "^https?://[^/]+$",
           "description": "Public SaaS API base URL (must be https://, no .svc.cluster.local, no IPs)"
         },
         "wsBase": {
           "type": "string",
-          "pattern": "^wss://[^/]+$",
+          "pattern": "^wss?://[^/]+$",
           "description": "Public SaaS WS base URL (must be wss://, no .svc.cluster.local, no IPs)"
         }
       },
-      "required": ["apiBase", "wsBase"]
+      "required": [
+        "apiBase",
+        "wsBase"
+      ]
     }
   }
 }
-

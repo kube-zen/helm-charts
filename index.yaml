@@ -3,9 +3,9 @@ entries:
   zen-agent:
   - apiVersion: v2
     appVersion: 1.1.9-bootstrap
-    created: "2025-12-08T17:44:10.750633014-05:00"
+    created: "2025-12-08T18:27:37.551822805-05:00"
     description: Zen Agent - Kubernetes remediation and observability agent
-    digest: dd87c3e916468e3e19b88152600db85f409ab079fb094daba260ef3bde106b17
+    digest: 307597be3a0794e28808f87ad6480b51f08062255bb2d4fb07708594d7a7f6fb
     home: https://kube-zen.io
     keywords:
     - observability
@@ -19,8 +19,8 @@ entries:
     - https://github.com/kube-zen/zen-agent
     type: application
     urls:
-    - https://kube-zen.github.io/helm-charts/zen-agent-1.0.4.tgz
-    version: 1.0.4
+    - https://kube-zen.github.io/helm-charts/zen-agent-1.0.5.tgz
+    version: 1.0.5
   zen-watcher:
   - annotations:
       artifacthub.io/containsSecurityUpdates: "true"
@@ -35,7 +35,7 @@ entries:
         url: https://keybase.io/your-keybase
     apiVersion: v2
     appVersion: 1.0.19
-    created: "2025-12-08T17:44:10.765827321-05:00"
+    created: "2025-12-08T18:27:37.556965469-05:00"
     description: Universal Kubernetes Event Aggregator - Secure, Extensible Event
       Collection
     digest: 3b518725cd672973f4fd122744646abbd01348d5cbbf1c7f034eb94d14ba6c23
@@ -71,7 +71,7 @@ entries:
         url: https://keybase.io/your-keybase
     apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-12-08T17:44:10.758295736-05:00"
+    created: "2025-12-08T18:27:37.555011566-05:00"
     description: Universal Kubernetes Event Aggregator - Secure, Extensible Event
       Collection
     digest: 8ed2b98effd10b0072b184ecc9110d6a0f113ff2b36372d8814555c1a2d96db9
@@ -94,4 +94,4 @@ entries:
     urls:
     - https://kube-zen.github.io/helm-charts/zen-watcher-1.0.0.tgz
     version: 1.0.0
-generated: "2025-12-08T17:44:10.73048179-05:00"
+generated: "2025-12-08T18:27:37.54607966-05:00"

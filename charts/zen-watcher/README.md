@@ -45,7 +45,7 @@ This Helm chart implements security best practices:
 ### Quick Start (Standalone)
 
 ```bash
-# zen-watcher is typically installed as part of zen-agent
+# zen-watcher is a standalone OSS component
 # But you can install it standalone for event detection only
 
 # Add Helm repository
@@ -58,7 +58,7 @@ helm install zen-watcher kubezen/zen-watcher \
   --create-namespace
 ```
 
-**Note:** zen-watcher is standalone - it only creates Observation CRDs locally. It does NOT communicate with external services. For full remediation capabilities, use `zen-agent` (which includes zen-watcher automatically).
+**Note:** zen-watcher is standalone - it only creates Observation CRDs locally. It does NOT communicate with external services.
 
 ### Production Installation
 

@@ -1,4 +1,4 @@
-{{- if .Values.mockData.enabled }}
+{{- if and .Values.mockData.enabled .Values.kyverno.enabled }}
 ---
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy

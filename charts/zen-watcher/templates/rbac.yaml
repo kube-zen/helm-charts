@@ -28,7 +28,7 @@ rules:
   resources: ["observations"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 - apiGroups: ["zen.kube-zen.io"]
-  resources: ["observationfilters", "observationmappings"]
+  resources: ["observationfilters", "observationmappings", "observationtypeconfigs", "observationsourceconfigs", "observationdedupconfigs"]
   verbs: ["get", "list", "watch"]
 - apiGroups: ["aquasecurity.github.io"]
   resources: ["vulnerabilityreports", "clustervulnerabilityreports", "configauditreports", "clusterconfigauditreports", "exposedsecretsreports", "clusterexposedsecretsreports", "rbachassessments", "clusterrbachassessments"]

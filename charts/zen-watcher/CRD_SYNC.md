@@ -28,7 +28,6 @@ When CRDs are updated in the zen-watcher repository:
 2. Copy the updated CRD(s) to `charts/zen-watcher/templates/` in this repository
 3. Commit the change in this repository
 
-**Note**: The `observationsourceconfig_crd.yaml` includes the new `ingester` field (replacing `adapterType`). See the [ingester migration guide](https://github.com/kube-zen/zen-watcher/blob/main/docs/INGESTER_MIGRATION_GUIDE.md) for details.
 
 ### Detecting Drift
 

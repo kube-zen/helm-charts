@@ -33,7 +33,7 @@ zen-watcher uses an **ingester-based architecture** for configuring data sources
 - **cm** - Poll ConfigMaps (e.g., Checkov, Kube-Bench)
 - **k8s-events** - Native Kubernetes Events API
 
-The `ObservationSourceConfig` CRD is automatically installed with this chart. See the [zen-watcher documentation](https://github.com/kube-zen/zen-watcher/blob/main/docs/INGESTER_MIGRATION_GUIDE.md) for migration details.
+The `ObservationSourceConfig` CRD is automatically installed with this chart. See the [zen-watcher documentation](https://github.com/kube-zen/zen-watcher/blob/main/docs/SOURCE_ADAPTERS.md) for configuration details.
 
 ## Prerequisites
 

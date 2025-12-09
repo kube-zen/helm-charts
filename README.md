@@ -79,7 +79,7 @@ kubectl get observations -A
 
 | Chart Version | App Version (Image Tag) | Kubernetes | Go Version | Notes |
 |---------------|-------------------------|------------|------------|-------|
-| 1.0.0         | 1.0.0                   | 1.26-1.29  | 1.23+      | Initial release |
+| 1.0.0-alpha   | 1.0.0-alpha             | 1.26-1.29  | 1.23+      | Current release with ingester CRD support |
 
 See individual chart READMEs for detailed version information.
 

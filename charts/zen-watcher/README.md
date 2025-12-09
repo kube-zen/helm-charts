@@ -6,7 +6,13 @@
 
 ## CRD Management
 
-⚠️ **Important**: The Observation CRD (`templates/observation_crd.yaml`) is synced from the zen-watcher repository and should not be edited here. See [CRD_SYNC.md](CRD_SYNC.md) for details.
+⚠️ **Important**: The following CRDs are synced from the zen-watcher repository and should not be edited here:
+- `observation_crd.yaml` - Observation resource definition
+- `observationfilter_crd.yaml` - Filter configuration
+- `observationmapping_crd.yaml` - Field mapping configuration
+- `observationsourceconfig_crd.yaml` - Source configuration with ingester field
+
+See [CRD_SYNC.md](CRD_SYNC.md) for details.
 
 ## Version Compatibility
 
@@ -16,6 +22,18 @@
 
 **Current Chart Version:** 1.0.0-alpha  
 **Current App Version:** 1.0.0-alpha (Go 1.23+)
+
+## Ingester System
+
+zen-watcher uses an **ingester-based architecture** for configuring data sources. Sources are configured via `ObservationSourceConfig` CRDs using the `ingester` field:
+
+- **informer** - Watch Kubernetes CRDs (e.g., Trivy, Kyverno)
+- **webhook** - Receive HTTP webhooks (e.g., Falco, Audit)
+- **logs** - Monitor pod logs (e.g., Sealed-Secrets)
+- **cm** - Poll ConfigMaps (e.g., Checkov, Kube-Bench)
+- **k8s-events** - Native Kubernetes Events API
+
+The `ObservationSourceConfig` CRD is automatically installed with this chart. See the [zen-watcher documentation](https://github.com/kube-zen/zen-watcher/blob/main/docs/INGESTER_MIGRATION_GUIDE.md) for migration details.
 
 ## Prerequisites
 
@@ -79,7 +97,7 @@ helm install zen-watcher kubezen/zen-watcher \
 | Parameter | Description | Default |
 |-----------|-------------|---------|
 | `image.repository` | Image repository | `kubezen/zen-watcher` |
-| `image.tag` | Image tag (Go 1.22) | `1.0.15` |
+| `image.tag` | Image tag | `1.0.0-alpha` |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` |
 | `autoDetect.enabled` | **Auto-detect security tools** - Continuously checks for Kyverno, Trivy, Falco pods in their namespaces | `true` |
 | `namespaces.kyverno` | Kyverno namespace to scan | `kyverno` |
@@ -93,7 +111,8 @@ helm install zen-watcher kubezen/zen-watcher \
 
 ### Features
 
-- ✅ **Auto-detection** - Automatically detects installed security tools
+- ✅ **Ingester-based sources** - Configure sources via ObservationSourceConfig CRD with ingester field
+- ✅ **Auto-detection** - Automatically detects installed security tools (legacy mode)
 - ✅ **Deduplication** - Only creates NEW Observations (no duplicates)
 - ✅ **Category taxonomy** - security, compliance, performance
 - ✅ **Label-based filtering** - `source=trivy,category=security`, `source=kyverno,category=compliance`
@@ -192,10 +211,10 @@ kubectl apply -f ../examples/grafana-dashboard.json
 ## Upgrade
 
 ```bash
-helm upgrade zen-watcher zen-watcher/zen-watcher \
+helm upgrade zen-watcher kubezen/zen-watcher \
   --namespace zen-system \
   --reuse-values \
-  --set image.tag=1.1.0
+  --set image.tag=1.0.0-alpha
 ```
 
 ## Uninstall

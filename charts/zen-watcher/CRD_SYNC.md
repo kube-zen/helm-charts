@@ -1,23 +1,34 @@
 # CRD Synchronization
 
-## Observation CRD
+## CRDs Managed
 
-The `observation_crd.yaml` file in this chart's `templates/` directory is **not maintained here**.
+The following CRD files in this chart's `templates/` directory are **not maintained here**:
+- `observation_crd.yaml` - Observation resource definition
+- `observationfilter_crd.yaml` - Filter configuration
+- `observationmapping_crd.yaml` - Field mapping configuration
+- `observationsourceconfig_crd.yaml` - Source configuration with ingester field
+
+## Observation CRD
 
 ### Source of Truth
 
-**Canonical location**: [github.com/kube-zen/zen-watcher/deployments/crds/observation_crd.yaml](https://github.com/kube-zen/zen-watcher/blob/main/deployments/crds/observation_crd.yaml)
+**Canonical locations**:
+- [observation_crd.yaml](https://github.com/kube-zen/zen-watcher/blob/main/deployments/crds/observation_crd.yaml)
+- [observationfilter_crd.yaml](https://github.com/kube-zen/zen-watcher/blob/main/deployments/crds/observationfilter_crd.yaml)
+- [observationmapping_crd.yaml](https://github.com/kube-zen/zen-watcher/blob/main/deployments/crds/observationmapping_crd.yaml)
+- [observationsourceconfig_crd.yaml](https://github.com/kube-zen/zen-watcher/blob/main/deployments/crds/observationsourceconfig_crd.yaml)
 
-This file is automatically synced from the zen-watcher repository and should **not be edited directly** in this repository.
+These files are automatically synced from the zen-watcher repository and should **not be edited directly** in this repository.
 
 ### Sync Process
 
-When the CRD is updated in the zen-watcher repository:
+When CRDs are updated in the zen-watcher repository:
 
-1. Changes are made to `deployments/crds/observation_crd.yaml` in zen-watcher
-2. Run `make sync-crd-to-chart` from the zen-watcher repository
-3. This copies the CRD to `charts/zen-watcher/templates/observation_crd.yaml` in this repository
-4. Commit the change in this repository
+1. Changes are made to `deployments/crds/*.yaml` in zen-watcher
+2. Copy the updated CRD(s) to `charts/zen-watcher/templates/` in this repository
+3. Commit the change in this repository
+
+**Note**: The `observationsourceconfig_crd.yaml` includes the new `ingester` field (replacing `adapterType`). See the [ingester migration guide](https://github.com/kube-zen/zen-watcher/blob/main/docs/INGESTER_MIGRATION_GUIDE.md) for details.
 
 ### Detecting Drift
 
